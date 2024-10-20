@@ -21,4 +21,10 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    Route::get('points', function () {
+        return Inertia::render('Points');
+    })->name('points');
+    Route::get('filters', function () {
+        return Inertia::render('Filters');
+    })->name('filters');
 });
