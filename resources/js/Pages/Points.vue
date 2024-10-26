@@ -1,6 +1,6 @@
-<script setup>
+<script lang="ts" setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import {reactive, ref} from "vue";
+import {reactive} from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PointsTableRow from "@/Pages/Admin/Points/PointsTableRow.vue";
