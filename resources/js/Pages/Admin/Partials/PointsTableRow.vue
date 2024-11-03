@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import {ref, watch} from "vue";
 import {Link} from "@inertiajs/vue3";
 

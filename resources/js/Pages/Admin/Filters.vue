@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 </script>
 
