@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PointController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,17 +15,30 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-    Route::get('points', function () {
-        return Inertia::render('Points');
-    })->name('points');
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => [
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified'
+    ]
+], function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    Route::group(['prefix' => 'points'], function () {
+        Route::get('/', [PointController::class, 'index'])->name('points.index');
+
+        Route::get('/create', [PointController::class, 'create'])->name('points.create');
+
+        Route::get('/{point}/edit', [PointController::class, 'edit'])->name('points.edit');
+
+        Route::post('/create', [PointController::class, 'store'])->name('points.store');
+
+        Route::put('/{point}', [PointController::class, 'update'])->name('points.update');
+
+        Route::delete('/{point}', [PointController::class, 'destroy'])->name('points.destroy');
+    });
+
     Route::get('filters', function () {
         return Inertia::render('Filters');
     })->name('filters');

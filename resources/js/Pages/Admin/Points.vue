@@ -1,15 +1,16 @@
-<script lang="ts" setup>
+<script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import {reactive} from "vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
-import PointsTableRow from "@/Pages/Admin/Points/PointsTableRow.vue";
+import PointsTableRow from "@/Pages/Admin/Partials/PointsTableRow.vue";
+import {Link} from "@inertiajs/vue3";
 
 const points = reactive([
     {
         id: 1,
         image: 'img.webp',
         name: 'Ferrari Park Tower',
+        filter: 'Жилой комплекс',
         updatedAt: '2024-10-20 18:30:02',
         isVisible: true
     },
@@ -17,6 +18,7 @@ const points = reactive([
         id: 2,
         image: 'img1.jpeg',
         name: 'Pattaya Park Tower',
+        filter: 'Жилой комплекс',
         updatedAt: '2024-10-19 12:30:02',
         isVisible: false
     },
@@ -24,6 +26,7 @@ const points = reactive([
         id: 3,
         image: 'img2.webp',
         name: 'Family Nest Project',
+        filter: 'Жилой комплекс',
         updatedAt: '2024-10-19 12:30:02',
         isVisible: false
     },
@@ -31,6 +34,7 @@ const points = reactive([
         id: 4,
         image: 'img3.webp',
         name: 'Courtyard',
+        filter: 'Жилой комплекс',
         updatedAt: '2024-10-13 09:30:02',
         isVisible: false
     },
@@ -40,6 +44,11 @@ const changeVisibility = (id) => {
     const index = points.findIndex(point => point.id === id);
     points[index].isVisible = !points[index].isVisible;
 }
+
+const save = () => {
+    console.log(points)
+}
+
 </script>
 
 <template>
@@ -50,8 +59,13 @@ const changeVisibility = (id) => {
                     Points list
                 </h2>
                 <div>
-                    <PrimaryButton class="mr-3">Add point</PrimaryButton>
-                    <SecondaryButton>Save all</SecondaryButton>
+                    <Link
+                        class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 transition ease-in-out duration-150 mr-3"
+                        :href="route('points.create')"
+                    >
+                        Add point
+                    </Link>
+                    <SecondaryButton @click="save">Save all</SecondaryButton>
                 </div>
             </div>
         </template>
@@ -65,6 +79,7 @@ const changeVisibility = (id) => {
                             <th class="text-center px-2 w-10">Id</th>
                             <th class="text-center px-2 w-28">Image</th>
                             <th class="text-left px-4">Building Name</th>
+                            <th class="text-center px-4 w-52">Filter</th>
                             <th class="text-center px-4 w-52">Updated date</th>
                             <th class="text-center px-2 w-24">Is visible</th>
                             <th class="text-center px-2 w-32">Actions</th>
