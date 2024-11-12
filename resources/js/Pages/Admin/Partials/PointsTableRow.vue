@@ -7,6 +7,7 @@ const props = defineProps({
     point: Object,
 });
 const { id, image, name, filter, updatedAt } = props.point;
+
 const localIsVisible = ref(props.point.isVisible);
 
 watch(() => props.point.isVisible, (newValue) => {
@@ -30,7 +31,7 @@ const remove = async () => {
     <tr class="even:bg-gray-100 h-28">
         <td class="py-2 px-4 text-center">{{ id }}</td>
         <td class="py-2 px-4 text-center">
-            <img :src="`/images/${image}`" alt="Ferrari Park Tower">
+            <img :src="`/storage/${image}`" alt="Ferrari Park Tower">
         </td>
         <td class="py-2 px-4">{{ name }}</td>
         <td class="py-2 px-4 text-center">{{ filter }}</td>

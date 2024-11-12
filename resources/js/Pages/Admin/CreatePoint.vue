@@ -1,39 +1,34 @@
 <script setup>
 
+import {ref} from "vue";
 import {Link, useForm} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import InputError from "@/Components/InputError.vue";
-import TextInput from "@/Components/TextInput.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import Textarea from "@/Components/Textarea.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import FileUploader from "@/Components/FileUploader.vue";
-import Select from "@/Components/Select.vue";
-import {onMounted, ref, watch} from "vue";
+import PointForm from "@/Pages/Admin/Partials/PointForm.vue";
 
 const form = useForm({
-    image: '',
+    image: null,
     name: '',
     address: '',
     description: '',
     tgLink: '',
     youtubeLink: '',
     filter: 0,
+    coordinates: null,
 });
 
-const filters = ref([]);
+const isSubmitting = ref(false);
 
-onMounted(async () => {
-   try {
-       const response = await axios(route('filters.getAll'));
-       filters.value = response.data;
-   } catch (e) {
-       console.log(e);
-   }
-});
+const submit = async () => {
+    isSubmitting.value = true;
 
-const submit = () => {
-    console.log(form)
+    try {
+        form.post(route('points.store'));
+    } catch (e) {
+        console.error(e);
+    } finally {
+        isSubmitting.value = false;
+    }
 }
 </script>
 
@@ -64,91 +59,10 @@ const submit = () => {
         <div class="p-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <form>
-                        <div class="form-wrapper md:grid md:grid-cols-2">
-                            <div class="md:col-span-1 flex-col justify-between p-6 border-r border-r-gray-200">
-                                <div class="">
-                                    <InputLabel for="image" value="Фото объекта" />
-                                    <FileUploader
-                                        id="image"
-                                        v-model="form.image"
-                                        class="block w-full mt-1"
-                                    />
-                                    <InputError :message="form.errors.image" class="mt-2" />
-                                </div>
-                                <div class="mt-6">
-                                    <InputLabel for="name" value="Название объекта" />
-                                    <TextInput
-                                        id="name"
-                                        v-model="form.name"
-                                        type="text"
-                                        class="block w-full mt-1"
-                                    />
-                                    <InputError :message="form.errors.name" class="mt-2" />
-                                </div>
-                                <div class="mt-6">
-                                    <InputLabel for="address" value="Адрес объекта" />
-                                    <TextInput
-                                        id="address"
-                                        v-model="form.address"
-                                        type="text"
-                                        class="block w-full mt-1"
-                                    />
-                                    <InputError :message="form.errors.address" class="mt-2" />
-                                </div>
-                                <div class="mt-6">
-                                    <InputLabel for="filter" value="Категория объекта" />
-                                    <Select
-                                        :options="filters"
-                                        :selected="form.filter"
-                                        v-model:selected="form.filter"
-                                        class="w-48"
-                                    />
-                                    <InputError :message="form.errors.filter" class="mt-2" />
-                                </div>
-                                <div class="mt-6">
-                                    <InputLabel for="description" value="Описание объекта" />
-                                    <Textarea
-                                        id="description"
-                                        v-model="form.description"
-                                        type="text"
-                                        class="block w-full mt-1"
-                                    />
-                                    <InputError :message="form.errors.description" class="mt-2" />
-                                </div>
-                                <div class="mt-6">
-                                    <InputLabel for="tgLink" value="Ссылка на Telegram" />
-                                    <TextInput
-                                        id="tgLink"
-                                        v-model="form.tgLink"
-                                        type="text"
-                                        class="block w-full mt-1"
-                                    />
-                                    <InputError :message="form.errors.tgLink" class="mt-2" />
-                                </div>
-                                <div class="mt-6">
-                                    <InputLabel for="youtubeLink" value="Ссылка на Youtube" />
-                                    <TextInput
-                                        id="youtubeLink"
-                                        v-model="form.youtubeLink"
-                                        type="text"
-                                        class="block w-full mt-1"
-                                    />
-                                    <InputError :message="form.errors.youtubeLink" class="mt-2" />
-                                </div>
-                            </div>
-                            <div class="mt-5 md:mt-0 md:col-span-1 p-6">
-                                <div id="map"></div>
-                            </div>
-                        </div>
-                    </form>
+                    <PointForm @submit.prevent="submit" :form="form" />
                 </div>
             </div>
         </div>
 
     </AppLayout>
 </template>
-
-<style scoped>
-
-</style>

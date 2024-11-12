@@ -2,10 +2,10 @@
 import {computed, onMounted, ref} from 'vue';
 
 const props = defineProps({
-    modelValue: String,
+    image: File,
 });
 
-defineEmits(['update:modelValue']);
+defineEmits(['update:image']);
 
 const file = ref(null);
 const fileName = ref('Фото не выбрано');
@@ -41,8 +41,7 @@ const updateModelValue = () => {
         <input
             ref="file"
             type="file"
-            :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)"
+            @input="$emit('update:image', $event.target.files[0])"
             @change="updateModelValue"
             class="hidden"
         />

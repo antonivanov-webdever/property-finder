@@ -24,8 +24,6 @@ class Point extends Model
 {
     use HasFactory;
 
-    protected $table = 'points';
-
     protected $fillable = [
         'image',
         'name',

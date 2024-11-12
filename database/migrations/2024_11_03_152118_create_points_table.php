@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('tg_link')->nullable();
             $table->string('coordinates');
             $table->foreignId('filter_id')->constrained();
-            $table->boolean('is_visible');
+            $table->boolean('is_visible')->nullable()->default(false);
             $table->timestamps();
         });
     }
