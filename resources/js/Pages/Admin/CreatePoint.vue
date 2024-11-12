@@ -22,7 +22,6 @@ const form = useForm({
 });
 
 const filters = ref([]);
-const selected = ref(0);
 
 onMounted(async () => {
    try {
