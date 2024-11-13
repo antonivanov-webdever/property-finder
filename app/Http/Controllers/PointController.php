@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Filter;
 use App\Models\Point;
 use Illuminate\Database\Eloquent\Casts\Json;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,11 +12,8 @@ class PointController extends Controller
 {
     public function index()
     {
-        $points = Point::orderBy('created_at', 'desc')->get();
-        $formatted_points = $this->formattedForFrontend($points);
-
         return Inertia::render('Admin/Points', [
-            'points' => $formatted_points
+            'points' => Point::getFormattedPoints()
         ]);
     }
 
@@ -28,69 +24,94 @@ class PointController extends Controller
 
     public function edit(Point $point)
     {
-        dd($point);
-        return Inertia::render('Admin/EditPoint', ['id' => $point->id]);
+        return Inertia::render('Admin/EditPoint', ['point' => $point]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required|min:3|max:255',
-            'description' => 'required|min:3|max:255',
-            'tgLink' => 'nullable|min:3|max:255|url:https,t.me',
-            'youtubeLink' => 'nullable|min:3|max:255|url:https,youtu.be',
-            'filter' => 'required|integer|exists:filters,id',
-            'coordinates' => 'required|array',
-            'address' => 'required|min:3|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|min:3|max:255',
+            'tg_link' => 'nullable|min:3|max:255|url:https,t.me',
+            'youtube_link' => 'nullable|min:3|max:255|url:https,youtu.be',
+            'filter_id' => 'required|integer|exists:filters,id',
+            'coordinates' => 'required|array|min:2|max:2',
+            'address' => 'required|min:3|max:255',
         ]);
 
         $imagePath = $request->file('image')->store('images', 'public');
         $coordinates = Json::encode($request->get('coordinates'));
 
-        $point = new Point;
-        $point->name = $request->get('name');
-        $point->image = $imagePath;
-        $point->description = $request->get('description');
-        $point->tg_link = $request->get('tgLink');
-        $point->youtube_link = $request->get('youtubeLink');
-        $point->filter_id = $request->get('filter');
-        $point->coordinates = $coordinates;
-        $point->address = $request->get('address');
-        $point->save();
+        Point::create([
+            'name' => $request->get('name'),
+            'description' => $request->get('description'),
+            'image' => '/storage/' . $imagePath,
+            'tg_link' => $request->get('tg_link'),
+            'youtube_link' => $request->get('youtube_link'),
+            'filter_id' => $request->get('filter_id'),
+            'coordinates' => $coordinates,
+            'address' => $request->get('address'),
+        ]);
 
-        return redirect()->route('points.index')->with('success', 'Point created successfully.');
+        return redirect()->route('points.index')->with('message', 'Точка успешно создана.');
     }
 
-    public function update(Point $point, string $id): string
+    public function save(Request $request): RedirectResponse
     {
-        dd($point);
-    }
-
-    public function destroy(Point $point): void
-    {
-        dd('destroy', $point);
-    }
-
-    private function formattedForFrontend(Collection $points): array {
-        $formatted_points = [];
+        $points = $request->all();
 
         foreach ($points as $point) {
-            $formatted_points[] = [
-                'id' => $point->id,
-                'name' => $point->name,
-                'description' => $point->description,
-                'tgLink' => $point->tg_link,
-                'youtubeLink' => $point->youtube_link,
-                'filter' => Filter::find($point->filter_id)->name,
-                'coordinates' => $point->coordinates,
-                'address' => $point->address,
-                'image' => $point->image,
-                'isVisible' => $point->is_visible,
-                'updatedAt' => $point->updated_at->toDateTimeString(),
-            ];
+            $dbPoint = Point::find($point['id']);
+            $dbPoint->is_visible = $point['is_visible'];
+            $dbPoint->save();
         }
 
-        return $formatted_points;
+        return redirect()->route('points.index')->with('message', 'Сохранение прошло успешно.');
+    }
+
+    public function update(Point $point, Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => 'required|min:3|max:255',
+            'description' => 'required|min:3|max:255',
+            'tg_link' => 'nullable|min:3|max:255|url:https,t.me',
+            'youtube_link' => 'nullable|min:3|max:255|url:https,youtu.be',
+            'filter_id' => 'required|integer|exists:filters,id',
+            'coordinates' => 'required|array|min:2|max:2',
+            'address' => 'required|min:3|max:255',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+            $imagePath = $request->file('image')->store('images', 'public');
+            $imagePath = '/storage/' . $imagePath;
+        } else {
+            $imagePath = $point->image;
+        }
+
+        $coordinates = Json::encode($request->get('coordinates'));
+
+        $point->name = $request->get('name');
+        $point->description = $request->get('description');
+        $point->image = $imagePath;
+        $point->tg_link = $request->get('tg_link');
+        $point->youtube_link = $request->get('youtube_link');
+        $point->filter_id = $request->get('filter_id');
+        $point->coordinates = $coordinates;
+        $point->address = $request->get('address');
+
+        $point->save();
+
+        return redirect()->route('points.index')->with('message', "Точка №{$point->id} успешно обновлена.");
+    }
+
+    public function destroy(Point $point): RedirectResponse
+    {
+        $point->delete();
+
+        return redirect()->route('points.index')->with('message', "Точка №{$point->id} успешно удалена.");
     }
 }

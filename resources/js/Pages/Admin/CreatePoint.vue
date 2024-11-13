@@ -1,6 +1,4 @@
 <script setup>
-
-import {ref} from "vue";
 import {Link, useForm} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -11,25 +9,11 @@ const form = useForm({
     name: '',
     address: '',
     description: '',
-    tgLink: '',
-    youtubeLink: '',
-    filter: 0,
+    tg_link: '',
+    youtube_link: '',
+    filter_id: 0,
     coordinates: null,
 });
-
-const isSubmitting = ref(false);
-
-const submit = async () => {
-    isSubmitting.value = true;
-
-    try {
-        form.post(route('points.store'));
-    } catch (e) {
-        console.error(e);
-    } finally {
-        isSubmitting.value = false;
-    }
-}
 </script>
 
 <template>
@@ -44,13 +28,13 @@ const submit = async () => {
                         class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150 mr-3"
                         :href="route('points.index')"
                     >
-                        Back to List
+                        Назад к списку
                     </Link>
                     <PrimaryButton
                         class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 transition ease-in-out duration-150"
-                        @click="submit"
+                        @click="form.post(route('points.store'))"
                     >
-                        Save
+                        Создать
                     </PrimaryButton>
                 </div>
             </div>
@@ -59,7 +43,7 @@ const submit = async () => {
         <div class="p-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <PointForm @submit.prevent="submit" :form="form" />
+                    <PointForm :form="form" />
                 </div>
             </div>
         </div>

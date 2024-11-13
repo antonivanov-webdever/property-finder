@@ -9,7 +9,6 @@ import Map from "@/Pages/Admin/Partials/Map.vue";
 import {onMounted, ref} from "vue";
 
 const props = defineProps(['form']);
-
 const filters = ref([]);
 
 onMounted(async () => {
@@ -38,6 +37,7 @@ onMounted(async () => {
                 </div>
                 <div class="mt-6">
                     <InputLabel for="image" value="Фото объекта" />
+                    <img class="mt-2 mb-3 rounded-md" v-if="typeof form.image === 'string'" :src="form.image" :alt="form.name">
                     <FileUploader
                         id="image"
                         v-model:image="form.image"
@@ -49,11 +49,11 @@ onMounted(async () => {
                     <InputLabel for="filter" value="Категория объекта" />
                     <Select
                         :options="filters"
-                        :selected="form.filter"
-                        v-model:selected="form.filter"
+                        :selected="form.filter_id"
+                        v-model:selected="form.filter_id"
                         class="w-48"
                     />
-                    <InputError :message="form.errors.filter" class="mt-2" />
+                    <InputError :message="form.errors.filter_id" class="mt-2" />
                 </div>
                 <div class="mt-6">
                     <InputLabel for="description" value="Описание объекта" />
@@ -66,24 +66,24 @@ onMounted(async () => {
                     <InputError :message="form.errors.description" class="mt-2" />
                 </div>
                 <div class="mt-6">
-                    <InputLabel for="tgLink" value="Ссылка на Telegram" />
+                    <InputLabel for="tg-link" value="Ссылка на Telegram" />
                     <TextInput
-                        id="tgLink"
-                        v-model="form.tgLink"
+                        id="tg-link"
+                        v-model="form.tg_link"
                         type="text"
                         class="block w-full mt-1"
                     />
-                    <InputError :message="form.errors.tgLink" class="mt-2" />
+                    <InputError :message="form.errors.tg_link" class="mt-2" />
                 </div>
                 <div class="mt-6">
-                    <InputLabel for="youtubeLink" value="Ссылка на Youtube" />
+                    <InputLabel for="youtube-link" value="Ссылка на Youtube" />
                     <TextInput
-                        id="youtubeLink"
-                        v-model="form.youtubeLink"
+                        id="youtube-link"
+                        v-model="form.youtube_link"
                         type="text"
                         class="block w-full mt-1"
                     />
-                    <InputError :message="form.errors.youtubeLink" class="mt-2" />
+                    <InputError :message="form.errors.youtube_link" class="mt-2" />
                 </div>
             </div>
             <div class="mt-5 md:mt-0 md:col-span-5 p-6">

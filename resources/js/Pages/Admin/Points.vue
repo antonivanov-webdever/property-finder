@@ -1,31 +1,96 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import {onMounted, ref} from "vue";
+import {onMounted, onUpdated, ref} from "vue";
+import {router, usePage} from "@inertiajs/vue3";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PointsTableRow from "@/Pages/Admin/Partials/PointsTableRow.vue";
 import {Link} from "@inertiajs/vue3";
+import InfoBanner from "@/Components/InfoBanner.vue";
+import Modal from "@/Components/Modal.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
-const props = defineProps({
-    points: {
-        type: Array,
-        required: false
-    }
-})
-
+const page = usePage();
 const points = ref([]);
+const isDisabled = ref(false);
+const isBannerShown = ref(false);
+const bannerMessage = ref('test');
+const bannerType = ref('success');
+const isModalShown = ref(false);
+const modalText = ref('');
+const deletingPoint = ref({});
 
 onMounted(() => {
-    points.value = props.points;
+    showBanner(page.props.flash.message);
+    points.value = page.props.points;
 });
+onUpdated(() => {
+    showBanner(page.props.flash.message);
+    points.value = page.props.points;
+});
+
+const showBanner = (text = '', type = 'success') => {
+    isBannerShown.value = true;
+    bannerMessage.value = text;
+    bannerType.value = type;
+}
+
+const closeBanner = () => {
+    bannerMessage.value = '';
+    isBannerShown.value = false;
+}
+
+const showDeleteModal = (point) => {
+    modalText.value = 'Вы уверены что хотите удалить данную точку?';
+    isModalShown.value = true;
+    deletingPoint.value = point;
+}
+
+const cancelDelete = () => {
+    modalText.value = '';
+    isModalShown.value = false;
+
+    setTimeout(() => {
+        deletingPoint.value = {};
+    }, 300);
+}
 
 const changeVisibility = (id) => {
     const index = points.value.findIndex(point => point.id === id);
-    points.value[index].isVisible = !points.value[index].isVisible;
+    points.value[index].is_visible = !points.value[index].is_visible;
 }
 
-const save = () => {
+const save = async () => {
+    isDisabled.value = true;
+
+    router.post(route('points.save'), points.value, {
+        onSuccess: (page) => {
+            showBanner(page.props.flash.message);
+        },
+        onError: (errors) => {
+            showBanner(errors.message, 'fail');
+        },
+        onFinish: visit => {
+            isDisabled.value = false;
+        }
+    });
 }
 
+const remove = async (point) => {
+    isDisabled.value = true;
+
+    router.delete(route('points.destroy', {id: point.id}), {
+        onSuccess: (page) => {
+            showBanner(page.props.flash.message);
+        },
+        onError: (errors) => {
+            showBanner(errors.message, 'fail');
+        },
+        onFinish: visit => {
+            isDisabled.value = false;
+            isModalShown.value = false;
+        }
+    });
+}
 </script>
 
 <template>
@@ -38,14 +103,28 @@ const save = () => {
                 <div>
                     <Link
                         class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 transition ease-in-out duration-150 mr-3"
+                        :class="{'pointer-events-none opacity-50': isDisabled}"
                         :href="route('points.create')"
                     >
-                        Добавить
+                        Создать
                     </Link>
-                    <SecondaryButton @click="save">Сохранить все</SecondaryButton>
+                    <SecondaryButton
+                        :class="{'disabled:opacity-50': isDisabled}"
+                        @click="save"
+                        :disabled="isDisabled"
+                    >
+                        Сохранить
+                    </SecondaryButton>
                 </div>
             </div>
         </template>
+
+        <InfoBanner
+            :show="isBannerShown"
+            :style="bannerType"
+            :message="bannerMessage"
+            @close="closeBanner"
+        />
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -68,11 +147,42 @@ const save = () => {
                             :point="point"
                             :key="point.id"
                             @change-visibility="changeVisibility"
+                            @remove="showDeleteModal(point)"
                         />
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
+
+        <Modal :show="isModalShown" max-width="md">
+            <div class="py-8 px-12">
+                <h2 class="">Вы точно хотите удалить данную точку?</h2>
+                <div class="info mt-6 text-sm">
+                    <div>
+                        <span>Название объекта:</span>
+                        <p>{{deletingPoint.name}}</p>
+                    </div>
+                    <div class="mt-4">
+                        <span>Адрес объекта:</span>
+                        <p>{{deletingPoint.address}}</p>
+                    </div>
+                    <div class="mt-3">
+                        <span>Фото объекта:</span>
+                        <img :src="deletingPoint.image" :alt="deletingPoint.name">
+                    </div>
+                </div>
+                <div class="actions mt-6 w-full flex justify-end">
+                    <SecondaryButton
+                        @click="remove(deletingPoint)"
+                        class="mr-2 hover:bg-red-400 hover:text-white hover:border-red-400"
+                    >
+                        Удалить
+                    </SecondaryButton>
+                    <PrimaryButton @click="cancelDelete">Отмена</PrimaryButton>
+                </div>
+            </div>
+        </Modal>
     </AppLayout>
 </template>

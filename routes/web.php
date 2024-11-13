@@ -35,7 +35,9 @@ Route::group([
 
         Route::post('/create', [PointController::class, 'store'])->name('points.store');
 
-        Route::put('/{point}', [PointController::class, 'update'])->name('points.update');
+        Route::post('/save', [PointController::class, 'save'])->name('points.save');
+
+        Route::post('/{point}', [PointController::class, 'update'])->name('points.update');
 
         Route::delete('/{point}', [PointController::class, 'destroy'])->name('points.destroy');
     });

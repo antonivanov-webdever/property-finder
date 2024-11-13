@@ -1,8 +1,9 @@
 <script setup>
 import {computed, ref, watch} from "vue";
+import {usePage} from "@inertiajs/vue3";
 
 const emit = defineEmits(['update:address', 'update:coordinates']);
-
+const page = usePage();
 const coordinates = ref(null);
 const long = ref('');
 const lat = ref('');
@@ -11,27 +12,35 @@ const city = ref('');
 const district = ref('');
 const street = ref('');
 const house = ref('');
-const fullAddress = computed(() => {
-    let result = '';
+const fullAddress = computed({
+    get() {
+        let result = '';
 
-    if (city.value) {
-        result = `${city.value}`;
+        if (city.value) {
+            result = `${city.value}`;
+        }
+
+        if (district.value) {
+            result += `, ${district.value}`;
+        }
+
+        if (street.value) {
+            result += `, ${street.value}`;
+        }
+
+        if (house.value) {
+            result += `, ${house.value}`;
+        }
+
+        emit('update:address', result);
+        return result;
+    },
+    set() {
+        city.value = '';
+        district.value = '';
+        street.value = '';
+        house.value = '';
     }
-
-    if (district.value) {
-        result += `, ${district.value}`;
-    }
-
-    if (street.value) {
-        result += `, ${street.value}`;
-    }
-
-    if (house.value) {
-        result += `, ${house.value}`;
-    }
-
-    emit('update:address', result);
-    return result;
 });
 
 watch(coordinates, (newValue) => {
@@ -41,14 +50,22 @@ watch(coordinates, (newValue) => {
 
 ymaps.ready(init);
 
-function init(){
+function init() {
     let placemark = undefined;
     const myMap = new ymaps.Map("map", {
         center: [55.76, 37.64],
         zoom: 8
     });
 
+    if (page.props.point?.address) {
+        coordinates.value = JSON.parse(page.props.point.coordinates);
+
+        setAddressByCoordinates();
+        addPlaceMark();
+    }
+
     myMap.events.add('click', function (e) {
+        fullAddress.value = '';
         coordinates.value = e.get('coords');
         emit('update:coordinates', coordinates);
 
@@ -56,11 +73,20 @@ function init(){
             myMap.geoObjects.remove(placemark);
         }
 
+        setAddressByCoordinates();
+        addPlaceMark();
+    });
+
+    function addPlaceMark() {
         placemark = new ymaps.Placemark(coordinates.value, {}, {
             preset: "islands#circleDotIcon",
             iconColor: '#1f2937'
         });
 
+        myMap.geoObjects.add(placemark);
+    }
+
+    function setAddressByCoordinates() {
         ymaps.geocode(coordinates.value, {
             results: 1
         }).then((res) => {
@@ -104,9 +130,7 @@ function init(){
                 }
             })
         });
-
-        myMap.geoObjects.add(placemark);
-    });
+    }
 }
 </script>
 
@@ -116,11 +140,11 @@ function init(){
         <div class="info">
             <div class="pb-2 font-medium text-sm text-gray-700 dark:text-gray-300">
                 <span>Координаты:</span>
-                {{coordinates}}
+                {{ coordinates }}
             </div>
             <div class="py-2 font-medium text-sm text-gray-700 dark:text-gray-300 hidden">
                 <span>Адрес:</span>
-                {{fullAddress}}
+                {{ fullAddress }}
             </div>
         </div>
     </div>

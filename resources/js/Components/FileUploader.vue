@@ -1,25 +1,29 @@
 <script setup>
-import {computed, onMounted, ref} from 'vue';
+import {onMounted, ref} from 'vue';
 
 const props = defineProps({
-    image: File,
+    image: File | String,
 });
 
 defineEmits(['update:image']);
 
 const file = ref(null);
 const fileName = ref('Фото не выбрано');
+const buttonText = ref('Загрузить');
 
 onMounted(() => {
     if (file.value.hasAttribute('autofocus')) {
         file.value.focus();
     }
+
+    if (typeof props.image === 'string') {
+        fileName.value = '';
+        buttonText.value = 'Заменить';
+    }
 });
 
-defineExpose({ focus: () => file.value.focus() });
-
 const updateModelValue = () => {
-    fileName.value = file.value.files[0]?.name ?? 'Фото не выбрано' ;
+    fileName.value = file.value.files[0]?.name ?? 'Фото не выбрано';
 }
 
 </script>
@@ -35,9 +39,9 @@ const updateModelValue = () => {
                 hover:bg-gray-100
                 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-            Загрузить
+            {{ buttonText }}
         </button>
-        <span class="text-sm text-slate-500 cursor-text ml-4">{{fileName}}</span>
+        <span class="text-sm text-slate-500 cursor-text ml-4">{{ fileName }}</span>
         <input
             ref="file"
             type="file"

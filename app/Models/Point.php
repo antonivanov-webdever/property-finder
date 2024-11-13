@@ -41,4 +41,22 @@ class Point extends Model
         'created_at',
         'updated_at'
     ];
+
+    public static function getFormattedPoints(): array
+    {
+        $points = self::orderBy('updated_at', 'desc')->get();
+        $formatted_points = [];
+
+        foreach ($points as $key => $point) {
+            $formatted_points[$key] = $point->toArray();
+
+            $formatted_points[$key]['filter'] = Filter::find($point->filter_id)->name;
+            $formatted_points[$key]['updated_at'] = $point->updated_at->toDateTimeString();
+
+            unset($formatted_points[$key]['filter_id']);
+            unset($formatted_points[$key]['created_at']);
+        }
+
+        return $formatted_points;
+    }
 }
