@@ -24,7 +24,7 @@ Route::group([
         'verified'
     ]
 ], function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'preview'])->name('dashboard');
 
     Route::group(['prefix' => 'points'], function () {
         Route::get('/', [PointController::class, 'index'])->name('points.index');
@@ -40,6 +40,8 @@ Route::group([
         Route::post('/{point}', [PointController::class, 'update'])->name('points.update');
 
         Route::delete('/{point}', [PointController::class, 'destroy'])->name('points.destroy');
+
+        Route::get('/getPointsOMJson', [PointController::class, 'getPointsOMJson'])->name('points.getPointsOMJson');
     });
 
     Route::group(['prefix' => 'filters'], function () {

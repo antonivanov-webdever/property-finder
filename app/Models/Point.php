@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Psy\Util\Json;
 
 /**
  * @property-read int $id;
@@ -58,5 +59,42 @@ class Point extends Model
         }
 
         return $formatted_points;
+    }
+
+    public static function getAllPointsJsonForOM(): string
+    {
+        $points = Point::all();
+        $result = [];
+
+        foreach ($points as $point) {
+            $filter = Filter::query()->find($point->filter_id);
+            $filterIconPath = str_replace('/admin', '', $filter->icon);
+            $coordinatesArray = json_decode($point->coordinates);
+            $longitude = $coordinatesArray[0];
+            $latitude = $coordinatesArray[1];
+            $result[] = [
+                'geometry' => [
+                    'coordinates' => [$longitude, $latitude],
+                    'type' => 'Point',
+                ],
+                'id' => (string) $point->id,
+                'options' => [
+                    'iconImageHref' => ".{$filterIconPath}"
+                ],
+                'properties' => [
+                    'address' => $point->address,
+                    'cap' => $point->name,
+                    'hintContent' => "<b>{$point->name}</b><br>{$point->address}",
+                    'image' => "<img src='{$point->image}' alt='{$point->name}'>",
+                    'filter_id' => $point->filter_id,
+                ],
+                'type' => 'Feature',
+            ];
+        }
+
+        return Json::encode([
+            'features' => $result,
+            'type' => 'FeatureCollection'
+        ]);
     }
 }

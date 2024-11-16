@@ -40,13 +40,13 @@ class PointController extends Controller
             'address' => 'required|min:3|max:255',
         ]);
 
-        $imagePath = $request->file('image')->store('images', 'public');
+        $imagePath = $request->file('image')->store('storage/images', 'admin');
         $coordinates = Json::encode($request->get('coordinates'));
 
         Point::create([
             'name' => $request->get('name'),
             'description' => $request->get('description'),
-            'image' => '/storage/' . $imagePath,
+            'image' => '/admin/' . $imagePath,
             'tg_link' => $request->get('tg_link'),
             'youtube_link' => $request->get('youtube_link'),
             'filter_id' => $request->get('filter_id'),
@@ -86,8 +86,8 @@ class PointController extends Controller
             $request->validate([
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-            $imagePath = $request->file('image')->store('images', 'public');
-            $imagePath = '/storage/' . $imagePath;
+            $imagePath = $request->file('image')->store('storage/images', 'admin');
+            $imagePath = '/admin/' . $imagePath;
         } else {
             $imagePath = $point->image;
         }
@@ -113,5 +113,10 @@ class PointController extends Controller
         $point->delete();
 
         return redirect()->route('points.index')->with('message', "Точка №{$point->id} успешно удалена.");
+    }
+
+    public function getPointsOMJson(): string
+    {
+        return Point::getAllPointsJsonForOM();
     }
 }

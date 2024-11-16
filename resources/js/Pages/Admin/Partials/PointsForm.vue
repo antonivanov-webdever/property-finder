@@ -5,7 +5,7 @@ import TextInput from "@/Components/TextInput.vue";
 import Select from "@/Components/Select.vue";
 import FileUploader from "@/Components/FileUploader.vue";
 import InputError from "@/Components/InputError.vue";
-import Map from "@/Pages/Admin/Partials/Map.vue";
+import Map from "@/Pages/Admin/Partials/MapEdit.vue";
 import {onMounted, ref} from "vue";
 
 const props = defineProps(['form']);

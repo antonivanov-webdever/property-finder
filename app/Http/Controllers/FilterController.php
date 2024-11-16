@@ -32,11 +32,17 @@ class FilterController extends Controller
             'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
         ]);
 
-        $imagePath = $request->file('icon')->store('images', 'public');
+        $imagePath = $request
+            ->file('icon')
+            ->storeAs(
+                'storage/images',
+                $request->file('icon')->getClientOriginalName(),
+                'admin'
+            );
 
         Filter::create([
             'name' => $request->get('name'),
-            'icon' => '/storage/' . $imagePath,
+            'icon' => '/admin/' . $imagePath,
         ]);
 
         return redirect()->route('filters.index')->with('message', 'Точка успешно создана.');
@@ -52,8 +58,14 @@ class FilterController extends Controller
             $request->validate([
                 'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
             ]);
-            $imagePath = $request->file('icon')->store('images', 'public');
-            $imagePath = '/storage/' . $imagePath;
+            $imagePath = $request
+                ->file('icon')
+                ->storeAs(
+                    'storage/images',
+                    $request->file('icon')->getClientOriginalName(),
+                    'admin'
+                );
+            $imagePath = '/admin/' . $imagePath;
         } else {
             $imagePath = $filter->icon;
         }

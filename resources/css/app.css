@@ -5,3 +5,85 @@
 [x-cloak] {
     display: none;
 }
+
+.map-container {
+    height: 600px;
+}
+
+#map {
+    height: 100%;
+}
+
+.ya-popover {
+    position: absolute;
+    white-space: normal;
+    background-color: #fff;
+    font-family: Fira Sans Extra Condensed, sans-serif;
+}
+
+.ya-popover .arrow {
+    width: 0;
+    height: 0;
+    border-color: #fff transparent transparent;
+    border-style: solid;
+    border-width: 14px 11px 0;
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    margin-left: -11px;
+    filter: drop-shadow(0 6px 3px rgba(0, 0, 0, .3));
+    -webkit-filter: drop-shadow(0 6px 3px rgba(0, 0, 0, .3));
+}
+
+.ya-popover-inner {
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+}
+
+.ya-popover-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    color: #fff;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.ya-popover-header {
+    height: 150px;
+    position: relative;
+    background-image: url('./storage/images/placeholder.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.ya-popover-header img {
+    width: 300px;
+    height: 150px;
+}
+
+.ya-popover-content {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.ya-popover a.close {
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: 5px;
+    text-decoration: none;
+    font: 700 30px serif;
+    z-index: 1;
+    -webkit-transition: text-shadow .4s;
+    transition: text-shadow .4s;
+}
+.ya-popover:hover a.close {
+    text-shadow: 0 0 1px rgba(0, 0, 0, .8);
+}
