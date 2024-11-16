@@ -2,7 +2,7 @@
 import {Link, useForm} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import PointForm from "@/Pages/Admin/Partials/PointForm.vue";
+import PointsForm from "@/Pages/Admin/Partials/PointsForm.vue";
 
 const form = useForm({
     image: null,
@@ -43,7 +43,7 @@ const form = useForm({
         <div class="p-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <PointForm :form="form" />
+                    <PointsForm :form="form" />
                 </div>
             </div>
         </div>

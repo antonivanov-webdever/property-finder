@@ -1,6 +1,6 @@
 <script setup>
 import Dropdown from "@/Components/Dropdown.vue";
-import {onUpdated, ref, watch} from 'vue';
+import {onUpdated, ref} from 'vue';
 import SelectOption from "@/Components/SelectOption.vue";
 
 const props = defineProps({

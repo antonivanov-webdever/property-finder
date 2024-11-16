@@ -45,15 +45,15 @@ Route::group([
     Route::group(['prefix' => 'filters'], function () {
         Route::get('/', [FilterController::class, 'index'])->name('filters.index');
 
-//        Route::get('/create', [PointController::class, 'create'])->name('points.create');
-//
-//        Route::get('/{point}/edit', [PointController::class, 'edit'])->name('points.edit');
-//
-//        Route::post('/create', [PointController::class, 'store'])->name('points.store');
-//
-//        Route::put('/{point}', [PointController::class, 'update'])->name('points.update');
-//
-//        Route::delete('/{point}', [PointController::class, 'destroy'])->name('points.destroy');
+        Route::get('/create', [FilterController::class, 'create'])->name('filters.create');
+
+        Route::get('/{filter}/edit', [FilterController::class, 'edit'])->name('filters.edit');
+
+        Route::post('/create', [FilterController::class, 'store'])->name('filters.store');
+
+        Route::post('/{filter}', [FilterController::class, 'update'])->name('filters.update');
+
+        Route::delete('/{filter}', [FilterController::class, 'destroy'])->name('filters.destroy');
 
         Route::get('/getAll', [FilterController::class, 'getAll'])->name('filters.getAll');
     });

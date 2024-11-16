@@ -18,7 +18,7 @@ watch(() => props.point.is_visible, (newValue) => {
     <tr class="even:bg-gray-100 h-28">
         <td class="py-2 px-4 text-center">{{ id }}</td>
         <td class="py-2 px-4 text-center">
-            <img :src="`${ image }`" alt="Ferrari Park Tower">
+            <img :src="`${ image }`" :alt="name">
         </td>
         <td class="py-2 px-4">{{ name }}</td>
         <td class="py-2 px-4 text-center">{{ filter }}</td>

@@ -27,4 +27,20 @@ class Filter extends Model
         'created_at',
         'updated_at'
     ];
+
+    public static function getFormattedFilters(): array
+    {
+        $filters = self::orderBy('updated_at', 'desc')->get();
+        $formatted_filters = [];
+
+        foreach ($filters as $key => $filter) {
+            $formatted_filters[$key] = $filter->toArray();
+            $formatted_filters[$key]['updated_at'] = $filter->updated_at->toDateTimeString();
+
+            unset($formatted_filters[$key]['filter_id']);
+            unset($formatted_filters[$key]['created_at']);
+        }
+
+        return $formatted_filters;
+    }
 }
