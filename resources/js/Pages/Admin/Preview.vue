@@ -1,8 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
-import MapPreview from "@/Pages/Admin/Partials/MapPreview.vue";
-import FilterTabs from "@/Pages/Admin/Partials/FilterTabs.vue";
+import Map from "@/Pages/Shared/Partials/Map.vue";
 </script>
 
 <template>
@@ -16,13 +14,7 @@ import FilterTabs from "@/Pages/Admin/Partials/FilterTabs.vue";
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <div class="filters pt-4 px-6">
-                        <h1 class="text-xl font-bold mb-5">Карта строек</h1>
-                        <h3>Отображать объекты со статусом:</h3>
-                        <FilterTabs />
-                    </div>
-
-                    <MapPreview />
+                    <Map />
                 </div>
             </div>
         </div>

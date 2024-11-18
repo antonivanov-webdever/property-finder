@@ -1,12 +1,13 @@
 <script setup>
-import {usePage} from "@inertiajs/vue3";
+import {baloonContentHtml, baloonHtml} from "@/Pages/Admin/Partials/baloonHtml.js";
+import FilterTabs from "@/Pages/Admin/Partials/FilterTabs.vue";
 
-const page = usePage();
+let myMap;
 
 ymaps.ready(init);
 
 function init() {
-    const myMap = new ymaps.Map("map", {
+    myMap = new ymaps.Map("map", {
         center: [55.76, 37.64],
         zoom: 9,
         controls: ["fullscreenControl", "rulerControl", "typeSelector", "zoomControl", "trafficControl", "searchControl"]
@@ -48,7 +49,11 @@ function init() {
             myMap.balloon.close()
         }
     });
-
+    myMap.filter = function(t) {
+        objectManager.setFilter(function(object) {
+            return -1 < t.indexOf(object.properties.filter_id)
+        })
+    }
     myMap.geoObjects.add(objectManager);
 
     axios.get(route('points.getPointsOMJson'), {
@@ -56,7 +61,7 @@ function init() {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        const object = ymaps.templateLayoutFactory.createClass('<div class="ya-popover"><a class="close" href="#">&times;</a><div class="arrow"></div><div class="ya-popover-inner">$[[options.contentLayout observeSize minWidth=300 maxWidth=300 maxHeight=350]]</div></div>', {
+        const object = ymaps.templateLayoutFactory.createClass(baloonHtml, {
             build: function() {
                 this.constructor.superclass.build.call(this);
                 this._$element = this.getParentElement().querySelector(".ya-popover");
@@ -94,8 +99,14 @@ function init() {
 
                 return new ymaps.shape.Rectangle(new ymaps.geometry.pixel.Rectangle(
                     [
-                        [position.left, position.top],
-                        [position.left + this._$element.offsetWidth, position.top + this._$element.offsetHeight + this._$element.querySelector(".arrow").offsetHeight]
+                        [
+                            position.left,
+                            position.top
+                        ],
+                        [
+                            position.left + this._$element.offsetWidth,
+                            position.top + this._$element.offsetHeight + this._$element.querySelector(".arrow").offsetHeight
+                        ]
                     ]
                 ))
             },
@@ -104,16 +115,30 @@ function init() {
             }
         });
 
-        const content = ymaps.templateLayoutFactory.createClass('<div class="ya-popover-header">$[properties.tags]<div class="ya-popover-caption">{{ properties.cap }}</div>$[properties.image]</div><div class="ya-popover-content">$[properties.address]{% if properties.obj_type %}<div><span>Тип: </span>{{ properties.obj_type }}</div>{% endif %}{% if properties.obj_status %}<div><span>Этап: </span>{{ properties.obj_status }}<span class="ya-popover-content-os ya-popover-content-os-{{ properties.obj_status_int }}"></span></div>{% endif %}{% if properties.developer %}<div><span>Застройщик:</span> {{ properties.developer|raw }}</div>{% endif %}{% if properties.contractor %}<div><span>Генподрядчик:</span> {{ properties.contractor|raw }}</div>{% endif %}{% if properties.constructr %}<div><span>Проектировщик:</span> {{ properties.constructr|raw }}</div>{% endif %}<div class="ya-popover-content-link">$[properties.url]</div></div>');
+        const content = ymaps.templateLayoutFactory.createClass(baloonContentHtml);
+
         objectManager.objects.options.set("balloonLayout", object);
         objectManager.objects.options.set("balloonContentLayout", content);
-        objectManager.add(res.data)
+        objectManager.add(res.data);
     })
+}
+
+const updateFilters = (activeFilters) => {
+    if (ymaps.ready()) {
+        myMap.filter(activeFilters);
+    }
 }
 </script>
 
 <template>
-    <div class="map-container p-6">
-        <div id="map" class="mt-2 mb-4 border"></div>
+    <div class="map">
+        <div class="filters pt-4 px-6">
+            <h1 class="text-xl font-bold mb-5">Карта строек</h1>
+            <h3>Отображать объекты со статусом:</h3>
+            <FilterTabs @update:filters="updateFilters"/>
+        </div>
+        <div class="map-container p-6">
+            <div id="map" class="mt-2 mb-4 border"></div>
+        </div>
     </div>
 </template>
