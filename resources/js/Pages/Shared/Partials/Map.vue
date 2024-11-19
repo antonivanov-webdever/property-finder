@@ -137,7 +137,7 @@ const updateFilters = (activeFilters) => {
             <h3>Отображать объекты со статусом:</h3>
             <FilterTabs @update:filters="updateFilters"/>
         </div>
-        <div class="map-container p-6">
+        <div class="map-container px-3 sm:px-6 sm:py-6">
             <div id="map" class="mt-2 mb-4 border"></div>
         </div>
     </div>

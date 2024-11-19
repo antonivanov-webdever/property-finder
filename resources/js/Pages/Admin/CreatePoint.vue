@@ -13,6 +13,7 @@ const form = useForm({
     youtube_link: '',
     filter_id: 0,
     coordinates: null,
+    is_visible: false,
 });
 </script>
 

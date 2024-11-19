@@ -25,7 +25,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="py-2 flex">
+    <div class="pt-2 flex flex-wrap">
         <FilterTab
             v-for="filter in filters"
             :key="filter.id"

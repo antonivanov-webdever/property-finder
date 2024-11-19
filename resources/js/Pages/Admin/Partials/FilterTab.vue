@@ -9,7 +9,7 @@ const isChecked = ref(true);
 </script>
 
 <template>
-    <label class="flex flex-row flex-nowrap mr-3">
+    <label class="flex sm:flex-row flex-nowrap mr-3 mb-3">
         <Checkbox
             class="hidden"
             :checked="isChecked"

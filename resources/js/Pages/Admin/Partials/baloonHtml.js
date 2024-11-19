@@ -3,55 +3,44 @@ export const baloonHtml = `
     <a class="close" href="#">&times;</a>
     <div class="arrow"></div>
     <div class="ya-popover-inner">
-        $[[options.contentLayout observeSize minWidth=300 maxWidth=300 maxHeight=350]]
+        $[[options.contentLayout observeSize minWidth=600 maxWidth=600 maxHeight=550]]
     </div>
 </div>
 `;
 
 export const baloonContentHtml = `
 <div class="ya-popover-header">
-    $[properties.tags]
-    <div class="ya-popover-caption">{{ properties.cap }}</div>
-    $[properties.image]
+    <div class="ya-popover-image">
+        $[properties.image]
+    </div>
+    <div class="ya-popover-info">
+        <div class="ya-popover-name">{{ properties.name }}</div>
+        <div class="ya-popover-address">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+            </svg>
+
+            $[properties.address]
+        </div>
+    </div>
 </div>
 <div class="ya-popover-content">
-    $[properties.address]
-
-    {% if properties.obj_type %}
-    <div>
-        <span>Тип: </span>
-        {{ properties.obj_type }}
-    </div>
-    {% endif %}
-
-    {% if properties.obj_status %}
-    <div>
-        <span>Этап: </span>
-        {{ properties.obj_status }}
-        <span class="ya-popover-content-os ya-popover-content-os-{{ properties.obj_status_int }}"></span>
-    </div>
-    {% endif %}
-
-    {% if properties.developer %}
-    <div>
-        <span>Застройщик:</span>
-        {{ properties.developer|raw }}
-    </div>
-    {% endif %}
-
-    {% if properties.contractor %}
-        <div>
-            <span>Генподрядчик:</span>
-            {{ properties.contractor|raw }}
+    {% if properties.description %}
+        <div class="ya-popover-description">
+            $[properties.description]
         </div>
     {% endif %}
 
-    {% if properties.constructr %}
-        <div>
-            <span>Проектировщик:</span>
-            {{ properties.constructr|raw }}
-        </div>
-    {% endif %}
+    <div class="ya-popover-links">
+        {% if properties.tg_link %}
+            $[properties.tg_link]
+        {% endif %}
+
+        {% if properties.youtube_link %}
+            $[properties.youtube_link]
+        {% endif %}
+    </div>
     <div class="ya-popover-content-link">$[properties.url]</div>
 </div>
 `;
