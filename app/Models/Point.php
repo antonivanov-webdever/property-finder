@@ -75,14 +75,21 @@ class Point extends Model
             $description = preg_replace('/\r\n/', ';', htmlspecialchars($point->description));
             $descriptionArray = explode(';', $description);
             $descriptionHtml = '';
+            $tgLink = null;
+            $youtubeLink = null;
 
             foreach ($descriptionArray as $descriptionItem) {
                 $descriptionItemArray = explode(':', $descriptionItem);
                 $descriptionHtml .= '<div><span>' . $descriptionItemArray[0] . ':</span> ' . $descriptionItemArray[1] . '</div>';
             }
 
-            $tgLink = '<a href="' . $point->tg_link . '" target="_blank">Обсудить в Telegram</a>';
-            $youtubeLink = '<a href="' . $point->youtube_link . '" target="_blank">Посмотреть на YouTube</a>';
+            if ($point->tg_link) {
+                $tgLink = '<a href="' . $point->tg_link . '" target="_blank">Обсудить в Telegram</a>';
+            }
+
+            if ($point->youtube_link) {
+                $youtubeLink = '<a href="' . $point->youtube_link . '" target="_blank">Посмотреть на YouTube</a>';
+            }
 
             $result[] = [
                 'geometry' => [
