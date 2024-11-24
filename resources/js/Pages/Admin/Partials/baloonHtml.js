@@ -41,6 +41,5 @@ export const baloonContentHtml = `
             $[properties.youtube_link]
         {% endif %}
     </div>
-    <div class="ya-popover-content-link">$[properties.url]</div>
 </div>
 `;

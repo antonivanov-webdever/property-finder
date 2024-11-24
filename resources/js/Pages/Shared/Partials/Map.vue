@@ -133,8 +133,8 @@ const updateFilters = (activeFilters) => {
 <template>
     <div class="map">
         <div class="filters pt-4 px-6">
-            <h1 class="text-xl font-bold mb-5">Карта строек</h1>
-            <h3>Отображать объекты со статусом:</h3>
+            <h1 class="sm:text-xl font-bold mb-4 sm:mb-5">Карта строек</h1>
+            <h3 class="sm:text-lg">Отображать объекты со статусом:</h3>
             <FilterTabs @update:filters="updateFilters"/>
         </div>
         <div class="map-container px-3 sm:px-6 sm:py-2">

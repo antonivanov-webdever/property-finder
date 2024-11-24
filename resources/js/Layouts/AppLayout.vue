@@ -198,7 +198,13 @@ const logout = () => {
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            Карта
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('points.index')" :active="route().current('points.*')">
+                            Точки
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('filters.index')" :active="route().current('filters.*')">
+                            Фильтры
                         </ResponsiveNavLink>
                     </div>
 
