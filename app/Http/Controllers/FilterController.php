@@ -45,7 +45,7 @@ class FilterController extends Controller
             'icon' => '/admin/' . $imagePath,
         ]);
 
-        return redirect()->route('filters.index')->with('message', 'Точка успешно создана.');
+        return redirect()->route('filters.index')->with('message', 'Фильтр успешно создан.');
     }
 
     public function update(Filter $filter, Request $request): RedirectResponse

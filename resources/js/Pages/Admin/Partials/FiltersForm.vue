@@ -23,11 +23,10 @@ const props = defineProps(['form']);
                 </div>
                 <div class="mt-6">
                     <InputLabel for="image" value="Иконка фильтра" />
-                    <img class="mt-2 mb-3 rounded-md" v-if="typeof form.icon === 'string'" :src="form.icon" :alt="form.name">
                     <FileUploader
                         id="image"
                         v-model:image="form.icon"
-                        class="block w-full mt-1"
+                        class="block w-80 mt-1"
                     />
                     <InputError :message="form.errors.icon" class="mt-2" />
                 </div>

@@ -36,8 +36,7 @@ onMounted(async () => {
                     <InputError :message="form.errors.name" class="mt-2" />
                 </div>
                 <div class="mt-6">
-                    <InputLabel for="image" value="Фото объекта" />
-                    <img class="mt-2 mb-3 rounded-md" v-if="typeof form.image === 'string'" :src="form.image" :alt="form.name">
+                    <InputLabel for="image" value="Фото объекта (формат 16:10)" />
                     <FileUploader
                         id="image"
                         v-model:image="form.image"
