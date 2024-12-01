@@ -6,14 +6,18 @@
     display: none;
 }
 
-.map-container {
+.map-container.edit-mode {
+    height: 435px;
+}
+
+.map-container:not(.edit-mode) {
     height: 600px;
     font-family: 'Roboto Condensed', sans-serif;
     white-space: normal;
     color: #1f2937;
 }
 
-#map {
+.map-container #map {
     height: 100%;
 }
 

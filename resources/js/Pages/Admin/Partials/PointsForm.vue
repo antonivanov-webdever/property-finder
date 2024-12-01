@@ -100,6 +100,7 @@ onMounted(async () => {
                 <div class="mt-6">
                     <InputLabel for="map" value="Выбрать точку на карте" />
                     <Map
+                        class="edit-mode"
                         v-model:address="form.address"
                         v-model:coordinates="form.coordinates"
                     />
