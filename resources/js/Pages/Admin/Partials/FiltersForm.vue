@@ -1,7 +1,7 @@
 <script setup>
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
-import FileUploader from "@/Components/FileUploader.vue";
+import FileUploader from "@/Components/ImageUploader.vue";
 import InputError from "@/Components/InputError.vue";
 
 const props = defineProps(['form']);

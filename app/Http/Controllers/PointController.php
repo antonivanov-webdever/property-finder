@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Filter;
 use App\Models\Point;
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\RedirectResponse;
@@ -13,7 +14,21 @@ class PointController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Points', [
-            'points' => Point::getFormattedPoints()
+            'points' => Point::orderBy('created_at', 'desc')
+                ->paginate(15)
+                ->through(fn ($point) => [
+                    'id' => $point->id,
+                    'image' => $point->image,
+                    'name' => $point->name,
+                    'address' => $point->address,
+                    'description' => $point->description,
+                    'tg_link' => $point->tg_link,
+                    'youtube_link' => $point->youtube_link,
+                    'filter' => Filter::find($point->filter_id)->name,
+                    'coordinates' => $point->coordinates,
+                    'is_visible' => $point->is_visible,
+                    'updated_at' => $point->updated_at->toDateTimeString(),
+                ])
         ]);
     }
 

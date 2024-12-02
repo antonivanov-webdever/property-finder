@@ -11,10 +11,6 @@ const form = useForm({
     name: page.props.filter.name,
     icon: page.props.filter.icon,
 });
-
-onMounted(() => {
-    console.log(page.props)
-})
 </script>
 
 <template>

@@ -39,7 +39,6 @@ const updateImage = (event) => {
     reader.readAsDataURL(event.target.files[0]);
     emit('update:image', event.target.files[0]);
 }
-
 </script>
 
 <template>

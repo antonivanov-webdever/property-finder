@@ -117,7 +117,7 @@ const remove = async (filter) => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <table class="table-fixed w-full">
+                    <table class="table-fixed w-full" v-if="filters.length > 0">
                         <thead class="h-12 border-b-2">
                         <tr>
                             <th class="text-center px-2 w-10">Id</th>
@@ -136,6 +136,7 @@ const remove = async (filter) => {
                         />
                         </tbody>
                     </table>
+                    <div class="p-6 text-center text-gray-400 font-medium" v-else>Нет ни одного добавленного фильтра.</div>
                 </div>
             </div>
         </div>

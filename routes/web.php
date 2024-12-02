@@ -26,6 +26,8 @@ Route::group([
 ], function () {
     Route::get('/dashboard', [AdminController::class, 'preview'])->name('dashboard');
 
+    Route::post('/csv', [AdminController::class, 'uploadPointsListCsv'])->name('csv');
+
     Route::group(['prefix' => 'points'], function () {
         Route::get('/', [PointController::class, 'index'])->name('points.index');
 

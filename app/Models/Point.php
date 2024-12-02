@@ -43,24 +43,6 @@ class Point extends Model
         'updated_at'
     ];
 
-    public static function getFormattedPoints(): array
-    {
-        $points = self::orderBy('updated_at', 'desc')->get();
-        $formatted_points = [];
-
-        foreach ($points as $key => $point) {
-            $formatted_points[$key] = $point->toArray();
-
-            $formatted_points[$key]['filter'] = Filter::find($point->filter_id)->name;
-            $formatted_points[$key]['updated_at'] = $point->updated_at->toDateTimeString();
-
-            unset($formatted_points[$key]['filter_id']);
-            unset($formatted_points[$key]['created_at']);
-        }
-
-        return $formatted_points;
-    }
-
     public static function getAllPointsJsonForOM(): string
     {
         $points = Point::all();
@@ -91,6 +73,10 @@ class Point extends Model
                 $youtubeLink = '<a href="' . $point->youtube_link . '" target="_blank">Посмотреть на YouTube</a>';
             }
 
+            if ($point->image) {
+                $image = "<img src='{$point->image}' alt='{$point->name}'>";
+            }
+
             $result[] = [
                 'geometry' => [
                     'coordinates' => [$longitude, $latitude],
@@ -104,7 +90,7 @@ class Point extends Model
                     'address' => $point->address,
                     'name' => $point->name,
                     'hintContent' => "<b>{$point->name}</b><br>{$point->address}",
-                    'image' => "<img src='{$point->image}' alt='{$point->name}'>",
+                    'image' => $image ?? null,
                     'description' => $descriptionHtml,
                     'tg_link' => $tgLink,
                     'youtube_link' => $youtubeLink,
