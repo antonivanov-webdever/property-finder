@@ -15,8 +15,11 @@
 
         <!-- Scripts -->
         <script src="https://api-maps.yandex.ru/2.1/?apikey=<?= config('services.maps.api_key') ?>&lang=ru_RU" type="text/javascript"></script>
+        @routes
+        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+        @inertiaHead
     </head>
     <body class="font-sans antialiased">
-        <h1>Hello</h1>
+        @inertia
     </body>
 </html>
