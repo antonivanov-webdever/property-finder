@@ -1,17 +1,19 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import {onMounted, onUpdated, ref} from "vue";
-import {router, useForm, usePage} from "@inertiajs/vue3";
+import { onMounted, onUpdated, ref } from "vue";
+import { router, useForm, usePage } from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PointsTableRow from "@/Pages/Admin/Partials/PointsTableRow.vue";
-import {Link} from "@inertiajs/vue3";
 import InfoBanner from "@/Components/InfoBanner.vue";
 import Modal from "@/Components/Modal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CsvUploader from "@/Components/CsvUploader.vue";
+import Pagination from "@/Components/Pagination.vue";
 
 const page = usePage();
 const points = ref([]);
+const links = ref([]);
 const isDisabled = ref(false);
 const isBannerShown = ref(false);
 const bannerMessage = ref('test');
@@ -23,10 +25,12 @@ const deletingPoint = ref({});
 onMounted(() => {
     showBanner(page.props.flash.message);
     points.value = page.props.points.data;
+    links.value = page.props.points.links;
 });
 onUpdated(() => {
     showBanner(page.props.flash.message);
     points.value = page.props.points.data;
+    links.value = page.props.points.links;
 });
 
 const csvForm = useForm({
@@ -173,9 +177,11 @@ const remove = async (point) => {
                             />
                             </tbody>
                         </table>
-
                     </div>
                     <div class="p-6 text-center text-gray-400 font-medium" v-else>Нет ни одной добавленной точки.</div>
+                </div>
+                <div class="pagination shadow-lg p-6 w-full flex justify-center bg-white rounded-lg mt-6">
+                    <Pagination :links="links" />
                 </div>
             </div>
         </div>

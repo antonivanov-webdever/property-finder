@@ -65,7 +65,7 @@ class AdminController extends Controller
                     'address' => $address,
                     'description' => 'Застройщик: ' . $builder,
                     'coordinates' => Json::encode($coordinates),
-                    'filter_id' => 10,
+                    'filter_id' => 1,
                     'is_visible' => 0
                 ]);
             }
