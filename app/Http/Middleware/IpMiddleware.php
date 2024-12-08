@@ -38,7 +38,10 @@ class IpMiddleware
             $this->ips[] = $ip['ip_address'];
         }
 
-        if ($request->path() !== '/') {
+        if ($request->path() !== '/' &&
+            $request->path() !== 'getPointsOMJson' &&
+            $request->path() !== 'getAll'
+        ) {
             foreach ($request->getClientIps() as $ip) {
                 if (! $this->isValidIp($ip) && ! $this->isValidIpRange($ip)) {
                     return redirect('/');

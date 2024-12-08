@@ -130,8 +130,8 @@ class PointController extends Controller
         return redirect()->route('points.index')->with('message', "Точка №{$point->id} успешно удалена.");
     }
 
-    public function getPointsOMJson(): string
+    public function getPointsOMJson(Request $request): string
     {
-        return Point::getAllPointsJsonForOM();
+        return Point::getAllPointsJsonForOM($request);
     }
 }

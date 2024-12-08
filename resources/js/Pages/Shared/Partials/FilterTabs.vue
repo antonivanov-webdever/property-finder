@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref, unref} from "vue";
-import FilterTab from "@/Pages/Admin/Partials/FilterTab.vue";
+import FilterTab from "@/Pages/Shared/Partials/FilterTab.vue";
 
 const emit = defineEmits(['update:filters']);
 const filters = ref([]);

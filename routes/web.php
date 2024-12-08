@@ -4,10 +4,17 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\PointController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
+//Route::get('/', function () {
+//    return view('app');
+//});
 Route::get('/', function () {
-    return view('app');
+    return Inertia::render('Home', []);
 });
+
+Route::get('/getPointsOMJson', [PointController::class, 'getPointsOMJson'])->name('points.getPointsOMJson');
+Route::get('/getAll', [FilterController::class, 'getAll'])->name('filters.getAll');
 
 Route::group([
     'prefix' => 'admin',
@@ -35,8 +42,6 @@ Route::group([
         Route::post('/{point}', [PointController::class, 'update'])->name('points.update');
 
         Route::delete('/{point}', [PointController::class, 'destroy'])->name('points.destroy');
-
-        Route::get('/getPointsOMJson', [PointController::class, 'getPointsOMJson'])->name('points.getPointsOMJson');
     });
 
     Route::group(['prefix' => 'filters'], function () {
@@ -51,7 +56,5 @@ Route::group([
         Route::post('/{filter}', [FilterController::class, 'update'])->name('filters.update');
 
         Route::delete('/{filter}', [FilterController::class, 'destroy'])->name('filters.destroy');
-
-        Route::get('/getAll', [FilterController::class, 'getAll'])->name('filters.getAll');
     });
 });

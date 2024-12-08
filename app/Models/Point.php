@@ -43,14 +43,21 @@ class Point extends Model
         'updated_at'
     ];
 
-    public static function getAllPointsJsonForOM(): string
+    public static function getAllPointsJsonForOM($request): string
     {
-        $points = Point::all();
         $result = [];
+        $isAdmin = str_contains($request->headers->get('referer'), 'admin');
+
+        $points = $isAdmin ? Point::all() : Point::all()->where('is_visible', 1);
 
         foreach ($points as $point) {
             $filter = Filter::query()->find($point->filter_id);
-            $filterIconPath = str_replace('/admin', '', $filter->icon);
+            $filterIconPath = $filter->icon;
+
+            if ($isAdmin) {
+                $filterIconPath = str_replace('/admin', '', $filter->icon);
+            }
+
             $coordinatesArray = json_decode($point->coordinates);
             $longitude = $coordinatesArray[0];
             $latitude = $coordinatesArray[1];
