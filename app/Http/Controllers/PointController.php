@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Filter;
+use App\Models\Category;
 use App\Models\Point;
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Database\Eloquent\Builder;
 
 class PointController extends Controller
 {
@@ -24,7 +25,7 @@ class PointController extends Controller
                     'description' => $point->description,
                     'tg_link' => $point->tg_link,
                     'youtube_link' => $point->youtube_link,
-                    'filter' => Filter::find($point->filter_id)->name,
+                    'category' => Category::find($point->category_id)->name,
                     'coordinates' => $point->coordinates,
                     'is_visible' => $point->is_visible,
                     'updated_at' => $point->updated_at->toDateTimeString(),
@@ -50,7 +51,7 @@ class PointController extends Controller
             'description' => 'required|min:3|max:255',
             'tg_link' => 'nullable|min:3|max:255|url:https,t.me',
             'youtube_link' => 'nullable|min:3|max:255|url:https,youtu.be',
-            'filter_id' => 'required|integer|exists:filters,id',
+            'category_id' => 'required|integer|exists:categories,id',
             'coordinates' => 'required|array|min:2|max:2',
             'address' => 'required|min:3|max:255',
         ]);
@@ -64,7 +65,7 @@ class PointController extends Controller
             'image' => '/admin/' . $imagePath,
             'tg_link' => $request->get('tg_link'),
             'youtube_link' => $request->get('youtube_link'),
-            'filter_id' => $request->get('filter_id'),
+            'category_id' => $request->get('category_id'),
             'coordinates' => $coordinates,
             'address' => $request->get('address'),
         ]);
@@ -92,7 +93,7 @@ class PointController extends Controller
             'description' => 'required|min:3|max:255',
             'tg_link' => 'nullable|min:3|max:255|url:https,t.me',
             'youtube_link' => 'nullable|min:3|max:255|url:https,youtu.be',
-            'filter_id' => 'required|integer|exists:filters,id',
+            'category_id' => 'required|integer|exists:categories,id',
             'coordinates' => 'required|array|min:2|max:2',
             'address' => 'required|min:3|max:255',
         ]);
@@ -114,7 +115,7 @@ class PointController extends Controller
         $point->image = $imagePath;
         $point->tg_link = $request->get('tg_link');
         $point->youtube_link = $request->get('youtube_link');
-        $point->filter_id = $request->get('filter_id');
+        $point->category_id = $request->get('category_id');
         $point->coordinates = $coordinates;
         $point->address = $request->get('address');
 
@@ -133,5 +134,60 @@ class PointController extends Controller
     public function getPointsOMJson(Request $request): string
     {
         return Point::getAllPointsJsonForOM($request);
+    }
+
+    public function search(Request $request) {
+        $searchQuery = '';
+        $whereArray = [];
+        $filters = [];
+
+        if ($request->has('q') && !empty($request->get('q'))) {
+            $searchQuery = $request->get('q');
+        }
+
+        if ($request->has('category_id')) {
+            $whereArray[] = ['category_id', $request->get('category_id')];
+            $filters['category_id'] = (int)$request->get('category_id');
+        }
+
+        if ($request->has('hasImage')) {
+            if ((int)$request->get('hasImage') === 1) {
+                $whereArray[] = ['image', 'not like', '%/placeholder%'];
+            } else {
+                $whereArray[] = ['image', 'like', '%/placeholder%'];
+            }
+
+            $filters['hasImage'] = (int)$request->get('hasImage');
+        }
+
+        if ($request->has('isVisible')) {
+            $whereArray[] = ['is_visible', $request->get('isVisible')];
+            $filters['isVisible'] = (int)$request->get('isVisible');
+        }
+
+        return Inertia::render('Admin/Points', [
+            'q' => $searchQuery,
+            'filters' => $filters,
+            'points' => Point::where(function (Builder $query) use ($searchQuery) {
+                    $query->where('name', 'like', '%' . $searchQuery . '%')
+                        ->orWhere('id', $searchQuery);
+            })
+                ->where($whereArray)
+                ->orderBy('created_at', 'desc')
+                ->paginate(15)
+                ->through(fn ($point) => [
+                    'id' => $point->id,
+                    'image' => $point->image,
+                    'name' => $point->name,
+                    'address' => $point->address,
+                    'description' => $point->description,
+                    'tg_link' => $point->tg_link,
+                    'youtube_link' => $point->youtube_link,
+                    'category' => Category::find($point->category_id)->name,
+                    'coordinates' => $point->coordinates,
+                    'is_visible' => $point->is_visible,
+                    'updated_at' => $point->updated_at->toDateTimeString(),
+                ])
+        ]);
     }
 }

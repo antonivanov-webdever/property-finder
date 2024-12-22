@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Filter;
+use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class FilterController extends Controller
+class CategoryController extends Controller
 {
     public function index() {
-        $filters = Filter::getFormattedFilters();
-        return Inertia::render('Admin/Filters', [
-            'filters' => $filters
+        $categories = Category::getFormattedCategories();
+        return Inertia::render('Admin/Categories', [
+            'categories' => $categories
         ]);
     }
 
     public function create() {
-        return Inertia::render('Admin/CreateFilter');
+        return Inertia::render('Admin/CreateCategory');
     }
 
-    public function edit(Filter $filter) {
-        return Inertia::render('Admin/EditFilter', [
-            'filter' => $filter
+    public function edit(Category $category) {
+        return Inertia::render('Admin/EditCategory', [
+            'category' => $category
         ]);
     }
 
@@ -40,15 +40,15 @@ class FilterController extends Controller
                 'admin'
             );
 
-        Filter::create([
+        Category::create([
             'name' => $request->get('name'),
             'icon' => '/admin/' . $imagePath,
         ]);
 
-        return redirect()->route('filters.index')->with('message', 'Фильтр успешно создан.');
+        return redirect()->route('categories.index')->with('message', 'Категория успешно создана.');
     }
 
-    public function update(Filter $filter, Request $request): RedirectResponse
+    public function update(Category $category, Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|min:3|max:255',
@@ -67,24 +67,24 @@ class FilterController extends Controller
                 );
             $imagePath = '/admin/' . $imagePath;
         } else {
-            $imagePath = $filter->icon;
+            $imagePath = $category->icon;
         }
 
-        $filter->name = $request->get('name');
-        $filter->icon = $imagePath;
+        $category->name = $request->get('name');
+        $category->icon = $imagePath;
 
-        $filter->save();
+        $category->save();
 
-        return redirect()->route('filters.index')->with('message', "Фильтр №{$filter->id} успешно обновлен.");
+        return redirect()->route('categories.index')->with('message', "Категория №{$category->id} успешно обновлена.");
     }
 
-    public function destroy(Filter $filter) {
-        $filter->delete();
+    public function destroy(Category $category) {
+        $category->delete();
 
-        return redirect()->route('filters.index')->with('message', "Фильтр №{$filter->id} успешно удален.");
+        return redirect()->route('categories.index')->with('message', "Категория №{$category->id} успешно удалена.");
     }
 
     public function getAll() {
-        return Filter::query()->orderBy('name')->get(['id', 'name', 'icon']);
+        return Category::query()->orderBy('name')->get(['id', 'name', 'icon']);
     }
 }

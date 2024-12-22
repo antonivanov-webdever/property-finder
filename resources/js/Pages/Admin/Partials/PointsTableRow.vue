@@ -6,7 +6,7 @@ const emit = defineEmits(['changeVisibility', 'remove']);
 const props = defineProps({
     point: Object,
 });
-const { id, image, name, filter, updated_at } = props.point;
+const { id, image, name, category, updated_at } = props.point;
 const local_is_visible = ref(props.point.is_visible);
 
 watch(() => props.point.is_visible, (newValue) => {
@@ -21,7 +21,7 @@ watch(() => props.point.is_visible, (newValue) => {
             <img :src="`${ image }`" :alt="name">
         </td>
         <td class="py-2 px-4">{{ name }}</td>
-        <td class="py-2 px-4 text-center">{{ filter }}</td>
+        <td class="py-2 px-4 text-center">{{ category }}</td>
         <td class="py-2 px-4 text-center">{{ updated_at }}</td>
         <td class="py-2 px-4 text-center">
             <span v-if="local_is_visible" class="text-green-500">Yes</span>

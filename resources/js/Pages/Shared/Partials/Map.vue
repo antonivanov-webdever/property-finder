@@ -1,6 +1,6 @@
 <script setup>
 import {baloonContentHtml, baloonHtml} from "@/Pages/Shared/Partials/baloonHtml.js";
-import FilterTabs from "@/Pages/Shared/Partials/FilterTabs.vue";
+import CategoryFilter from "@/Pages/Shared/Partials/CategoryFilter.vue";
 import {ref} from "vue";
 
 const isLoading = ref(false);
@@ -54,7 +54,7 @@ function init() {
     });
     myMap.filter = function(t) {
         objectManager.setFilter(function(object) {
-            return -1 < t.indexOf(object.properties.filter_id)
+            return -1 < t.indexOf(object.properties.category_id)
         })
     }
     myMap.geoObjects.add(objectManager);
@@ -128,7 +128,7 @@ function init() {
     })
 }
 
-const updateFilters = (activeFilters) => {
+const updateCategoryFilter = (activeFilters) => {
     if (ymaps.ready()) {
         myMap.filter(activeFilters);
     }
@@ -140,7 +140,7 @@ const updateFilters = (activeFilters) => {
         <div class="filters pt-4 px-6">
             <h1 class="sm:text-xl font-bold mb-4 sm:mb-5">Карта строек</h1>
             <h3 class="sm:text-lg">Отображать объекты со статусом:</h3>
-            <FilterTabs @update:filters="updateFilters"/>
+            <CategoryFilter @update:categoryFilter="updateCategoryFilter"/>
         </div>
         <div class="map-container px-3 sm:px-6 sm:py-2 flex justify-center">
             <div class="loader h-44 w-44 self-center" v-if="isLoading">

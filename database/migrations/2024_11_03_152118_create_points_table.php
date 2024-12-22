@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('youtube_link')->nullable();
             $table->string('tg_link')->nullable();
             $table->string('coordinates');
-            $table->foreignId('filter_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->boolean('is_visible')->nullable()->default(false);
             $table->timestamps();
         });

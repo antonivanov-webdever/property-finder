@@ -12,7 +12,7 @@ const props = defineProps(['form']);
         <div class="form-wrapper md:grid md:grid-cols-1">
             <div class="md:col-span-1 flex-col justify-between p-6 border-r border-r-gray-200">
                 <div class="">
-                    <InputLabel for="name" value="Название фильтра" />
+                    <InputLabel for="name" value="Название категории" />
                     <TextInput
                         id="name"
                         v-model="form.name"
@@ -22,7 +22,7 @@ const props = defineProps(['form']);
                     <InputError :message="form.errors.name" class="mt-2" />
                 </div>
                 <div class="mt-6">
-                    <InputLabel for="image" value="Иконка фильтра" />
+                    <InputLabel for="image" value="Иконка категории" />
                     <FileUploader
                         id="image"
                         v-model:image="form.icon"

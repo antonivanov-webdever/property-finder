@@ -10,6 +10,8 @@ import Modal from "@/Components/Modal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CsvUploader from "@/Components/CsvUploader.vue";
 import Pagination from "@/Components/Pagination.vue";
+import SearchForm from "@/Pages/Admin/Partials/SearchForm.vue";
+import FiltersBar from "@/Pages/Admin/Partials/FiltersBar.vue";
 
 const page = usePage();
 const points = ref([]);
@@ -22,6 +24,17 @@ const isModalShown = ref(false);
 const modalText = ref('');
 const deletingPoint = ref({});
 
+const csvForm = useForm({
+    csv: null
+});
+
+const searchForm = useForm({
+    q: page.props.q,
+    hasImage: page.props.filters?.hasImage ?? undefined,
+    isVisible: page.props.filters?.isVisible ?? undefined,
+    category_id: page.props.filters?.category_id ?? undefined,
+});
+
 onMounted(() => {
     showBanner(page.props.flash.message);
     points.value = page.props.points.data;
@@ -33,9 +46,21 @@ onUpdated(() => {
     links.value = page.props.points.links;
 });
 
-const csvForm = useForm({
-    csv: null
-});
+const resetFilters = () => {
+    if (searchForm.isVisible === undefined && searchForm.category_id === undefined && searchForm.hasImage === undefined) {
+        return false;
+    }
+
+    if (searchForm.q) {
+        searchForm.isVisible = undefined;
+        searchForm.hasImage = undefined;
+        searchForm.category_id = undefined;
+
+        searchForm.get(route('points.search'));
+    } else {
+        router.get(route('points.index'));
+    }
+}
 
 const uploadCsv = () => {
     isDisabled.value = true;
@@ -151,17 +176,32 @@ const remove = async (point) => {
             @close="closeBanner"
         />
 
-        <div class="py-12">
+        <div class="pt-12 pb-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <div class="table" v-if="points.length > 0">
+                <div class="bg-white dark:bg-gray-800 shadow-md sm:rounded-lg">
+                    <div class="search p-6">
+                        <SearchForm class="mb-4" :search-form="searchForm" @submit="searchForm.get(route('points.search'))" />
+
+                        <FiltersBar
+                            :filter-form="searchForm"
+                            @change="searchForm.get(route('points.search'))"
+                            @reset="resetFilters"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pt-4 pb-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-lg">
+                    <div class="table" v-if="points">
                         <table class="table-fixed w-full">
                             <thead class="h-12 border-b-2">
                             <tr>
                                 <th class="text-center px-2 w-10">Id</th>
                                 <th class="text-center px-2 w-28">Фото</th>
                                 <th class="text-left px-4">Название объекта</th>
-                                <th class="text-center px-4 w-52">Фильтр</th>
+                                <th class="text-center px-4 w-52">Категория</th>
                                 <th class="text-center px-4 w-52">Дата изменения</th>
                                 <th class="text-center px-2 w-24">Видимость</th>
                                 <th class="text-center px-2 w-32">Действия</th>
@@ -180,7 +220,7 @@ const remove = async (point) => {
                     </div>
                     <div class="p-6 text-center text-gray-400 font-medium" v-else>Нет ни одной добавленной точки.</div>
                 </div>
-                <div class="pagination shadow-lg p-6 w-full flex justify-center bg-white rounded-lg mt-6">
+                <div class="pagination shadow-lg p-6 w-full flex justify-center bg-white rounded-lg mt-8">
                     <Pagination :links="links" />
                 </div>
             </div>

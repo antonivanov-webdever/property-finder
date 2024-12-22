@@ -11,7 +11,7 @@ const form = useForm({
     description: '',
     tg_link: '',
     youtube_link: '',
-    filter_id: 0,
+    category_id: 0,
     coordinates: null,
     is_visible: false,
 });

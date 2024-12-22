@@ -54,8 +54,8 @@ const logout = () => {
                                 <NavLink :href="route('points.index')" :active="route().current('points.*')">
                                     Точки
                                 </NavLink>
-                                <NavLink :href="route('filters.index')" :active="route().current('filters.*')">
-                                    Фильтры
+                                <NavLink :href="route('categories.index')" :active="route().current('categories.*')">
+                                    Категории
                                 </NavLink>
                             </div>
                         </div>
@@ -203,8 +203,8 @@ const logout = () => {
                         <ResponsiveNavLink :href="route('points.index')" :active="route().current('points.*')">
                             Точки
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('filters.index')" :active="route().current('filters.*')">
-                            Фильтры
+                        <ResponsiveNavLink :href="route('categories.index')" :active="route().current('categories.*')">
+                            Категории
                         </ResponsiveNavLink>
                     </div>
 

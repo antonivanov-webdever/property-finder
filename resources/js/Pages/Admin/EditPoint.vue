@@ -13,7 +13,7 @@ const form = useForm({
     description: page.props.point.description,
     tg_link: page.props.point.tg_link,
     youtube_link: page.props.point.youtube_link,
-    filter_id: page.props.point.filter_id,
+    category_id: page.props.point.category_id,
     coordinates: JSON.parse(page.props.point.coordinates),
 });
 </script>

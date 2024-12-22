@@ -14,7 +14,7 @@ use Psy\Util\Json;
  * @property string $description;
  * @property string $tg_link;
  * @property string $youtube_link;
- * @property string $filter_id;
+ * @property string $category_id;
  * @property string $coordinates;
  * @property string $is_visible;
  * @property-read string $created_at;
@@ -32,7 +32,7 @@ class Point extends Model
         'description',
         'tg_link',
         'youtube_link',
-        'filter_id',
+        'category_id',
         'coordinates',
         'is_visible'
     ];
@@ -51,11 +51,11 @@ class Point extends Model
         $points = $isAdmin ? Point::all() : Point::all()->where('is_visible', 1);
 
         foreach ($points as $point) {
-            $filter = Filter::query()->find($point->filter_id);
-            $filterIconPath = $filter->icon;
+            $category = Category::query()->find($point->category_id);
+            $categoryIconPath = $category->icon;
 
             if ($isAdmin) {
-                $filterIconPath = str_replace('/admin', '', $filter->icon);
+                $categoryIconPath = str_replace('/admin', '', $category->icon);
             }
 
             $coordinatesArray = json_decode($point->coordinates);
@@ -91,7 +91,7 @@ class Point extends Model
                 ],
                 'id' => (string) $point->id,
                 'options' => [
-                    'iconImageHref' => ".{$filterIconPath}"
+                    'iconImageHref' => ".{$categoryIconPath}"
                 ],
                 'properties' => [
                     'address' => $point->address,
@@ -101,7 +101,7 @@ class Point extends Model
                     'description' => $descriptionHtml,
                     'tg_link' => $tgLink,
                     'youtube_link' => $youtubeLink,
-                    'filter_id' => $point->filter_id,
+                    'category_id' => $point->category_id,
                 ],
                 'type' => 'Feature',
             ];

@@ -8,10 +8,11 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    label: String,
     selected: {
         type: Number,
         required: false,
-        default: 0,
+        default: undefined,
     }
 });
 
@@ -25,12 +26,12 @@ onUpdated(() => {
 </script>
 
 <template>
-    <Dropdown align="left" class="mt-1">
+    <Dropdown align="left">
         <template #trigger>
             <span class="inline-flex rounded-md">
-                <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
-                    <span v-if="!selectedOptionName">Выбрать категорию</span>
-                    <span v-else>{{selectedOptionName}}</span>
+                <button type="button" class="inline-flex items-center px-3 py-3 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+                    <span v-if="!selectedOptionName" class="w-48 text-start">{{ label ?? 'Выбрать категорию' }}</span>
+                    <span v-else class="w-48 text-start">{{selectedOptionName}}</span>
                     <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                     </svg>

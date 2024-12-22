@@ -9,12 +9,12 @@ import Map from "@/Pages/Admin/Partials/MapEdit.vue";
 import {onMounted, ref} from "vue";
 
 const props = defineProps(['form']);
-const filters = ref([]);
+const categories = ref([]);
 
 onMounted(async () => {
     try {
-        const response = await axios(route('filters.getAll'));
-        filters.value = response.data;
+        const response = await axios(route('categories.getAll'));
+        categories.value = response.data;
     } catch (e) {
         console.log(e);
     }
@@ -45,14 +45,14 @@ onMounted(async () => {
                     <InputError :message="form.errors.image" class="mt-2" />
                 </div>
                 <div class="mt-6">
-                    <InputLabel for="filter" value="Категория объекта" />
+                    <InputLabel for="category" value="Категория объекта" />
                     <Select
-                        :options="filters"
-                        :selected="form.filter_id"
-                        v-model:selected="form.filter_id"
-                        class="w-48"
+                        :options="categories"
+                        :selected="form.category_id"
+                        v-model:selected="form.category_id"
+                        class="w-48 mt-1"
                     />
-                    <InputError :message="form.errors.filter_id" class="mt-2" />
+                    <InputError :message="form.errors.category_id" class="mt-2" />
                 </div>
                 <div class="mt-6">
                     <InputLabel for="description" value="Описание объекта" />
@@ -109,7 +109,3 @@ onMounted(async () => {
         </div>
     </form>
 </template>
-
-<style scoped>
-
-</style>
