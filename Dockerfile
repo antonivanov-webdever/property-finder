@@ -8,6 +8,7 @@ RUN apt-get upgrade && apt-get update && apt-get install -y --no-install-recomme
     libfreetype6-dev -y\
     libzip-dev -y\
     unzip \
+    curl \
     git -y\
     nodejs \
     npm \
