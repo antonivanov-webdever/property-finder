@@ -2,7 +2,7 @@ FROM php:8.2-fpm
 
 LABEL authors="Anton Ivanov"
 
-RUN apt-get upgrade && apt-get update && && apt-get install -y --no-install-recommends apt-utils \
+RUN apt-get upgrade && apt-get update && apt-get install -y --no-install-recommends apt-utils \
     libpng-dev -y\
     libjpeg-dev -y\
     libfreetype6-dev -y\
