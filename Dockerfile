@@ -13,7 +13,7 @@ RUN apt-get upgrade && apt-get update && apt-get install -y --no-install-recomme
     nodejs \
     npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd zip pdo_mysql curl
+    && docker-php-ext-install gd zip pdo_mysql
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
