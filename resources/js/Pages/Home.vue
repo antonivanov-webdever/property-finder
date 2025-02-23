@@ -25,7 +25,18 @@ import Map from "@/Pages/Shared/Partials/Map.vue";
                 </div>
             </div>
         </main>
-        <footer class="footer"></footer>
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="copyright"></div>
+                <div class="ya-informer">
+                    <!-- Yandex.Metrika informer -->
+                    <a href="https://metrika.yandex.ru/stat/?id=100015090&amp;from=informer"
+                       target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/100015090/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+                                                           style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="100015090" data-lang="ru" /></a>
+                    <!-- /Yandex.Metrika informer -->
+                </div>
+            </div>
+        </footer>
     </body>
 </template>
 

@@ -25,7 +25,10 @@ onMounted(() => {
 
 onUpdated(() => {
     if (imageSrc.value) {
-        buttonText.value = 'Заменить';
+        const filename = file.value.files[0]?.name;
+        if (filename && !filename.includes('placeholder')) {
+            buttonText.value = 'Заменить';
+        }
     }
 });
 

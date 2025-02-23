@@ -15,6 +15,7 @@ function init() {
         zoom: 9,
         controls: ["fullscreenControl", "rulerControl", "typeSelector", "zoomControl", "trafficControl", "searchControl"]
     });
+    myMap.options.set({balloonPanelMaxMapArea: '260000'});
 
     const objectManager = new ymaps.ObjectManager({
         clusterize: false,
