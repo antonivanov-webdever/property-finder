@@ -26,7 +26,8 @@ const props = defineProps(['form']);
                     <FileUploader
                         id="image"
                         v-model:image="form.icon"
-                        class="block w-80 mt-1"
+                        :size="'xs'"
+                        class="block max-w-full mt-1"
                     />
                     <InputError :message="form.errors.icon" class="mt-2" />
                 </div>

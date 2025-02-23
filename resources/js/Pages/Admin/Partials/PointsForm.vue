@@ -24,7 +24,7 @@ onMounted(async () => {
 <template>
     <form>
         <div class="form-wrapper md:grid md:grid-cols-8">
-            <div class="md:col-span-3 flex-col justify-between p-6 border-r border-r-gray-200">
+            <div class="md:col-span-4 flex-col justify-between p-6 border-r border-r-gray-200">
                 <div class="">
                     <InputLabel for="name" value="Название объекта" />
                     <TextInput
@@ -36,7 +36,7 @@ onMounted(async () => {
                     <InputError :message="form.errors.name" class="mt-2" />
                 </div>
                 <div class="mt-6">
-                    <InputLabel for="image" value="Фото объекта (формат 16:10)" />
+                    <InputLabel for="image" value="Фото объекта (формат 1:1 квадрат)" />
                     <FileUploader
                         id="image"
                         v-model:image="form.image"
@@ -55,7 +55,7 @@ onMounted(async () => {
                     <InputError :message="form.errors.category_id" class="mt-2" />
                 </div>
                 <div class="mt-6">
-                    <InputLabel for="description" value="Описание объекта" />
+                    <InputLabel for="description" value="Описание объекта (разделитель точка с запятой + перенос)" />
                     <Textarea
                         id="description"
                         v-model="form.description"
@@ -65,7 +65,7 @@ onMounted(async () => {
                     <InputError :message="form.errors.description" class="mt-2" />
                 </div>
                 <div class="mt-6">
-                    <InputLabel for="tg-link" value="Ссылка на Telegram" />
+                    <InputLabel for="tg-link" value="Ссылка на Telegram (формат https://t.me/... )" />
                     <TextInput
                         id="tg-link"
                         v-model="form.tg_link"
@@ -75,7 +75,7 @@ onMounted(async () => {
                     <InputError :message="form.errors.tg_link" class="mt-2" />
                 </div>
                 <div class="mt-6">
-                    <InputLabel for="youtube-link" value="Ссылка на Youtube" />
+                    <InputLabel for="youtube-link" value="Ссылка на Youtube (формат https://www.youtube.com/watch?v=... )" />
                     <TextInput
                         id="youtube-link"
                         v-model="form.youtube_link"
@@ -85,7 +85,7 @@ onMounted(async () => {
                     <InputError :message="form.errors.youtube_link" class="mt-2" />
                 </div>
             </div>
-            <div class="mt-5 md:mt-0 md:col-span-5 p-6">
+            <div class="mt-5 md:mt-0 md:col-span-4 p-6">
                 <div class="">
                     <InputLabel for="address" value="Адрес объекта" />
                     <TextInput

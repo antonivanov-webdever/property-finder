@@ -22,7 +22,7 @@ watch(() => props.point.is_visible, (newValue) => {
         </td>
         <td class="py-2 px-4">{{ name }}</td>
         <td class="py-2 px-4 text-center">{{ category }}</td>
-        <td class="py-2 px-4 text-center">{{ updated_at }}</td>
+        <td class="py-2 px-4 text-center max-xl:hidden">{{ updated_at }}</td>
         <td class="py-2 px-4 text-center">
             <span v-if="local_is_visible" class="text-green-500">Yes</span>
             <span v-else class="text-red-500">No</span>

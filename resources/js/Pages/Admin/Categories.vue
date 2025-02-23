@@ -91,11 +91,11 @@ const remove = async (category) => {
 <template>
     <AppLayout title="Категории">
         <template #header>
-            <div class="flex flex-row justify-between align-middle">
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <div class="flex flex-row justify-between align-middle max-sm:flex-col">
+                <h2 class="font-semibold text-xl text-center text-gray-800 dark:text-gray-200 leading-tight max-sm:mb-4">
                     Список категорий
                 </h2>
-                <div>
+                <div class="max-sm:flex max-sm:flex-col max-sm:items-center">
                     <Link
                         class="cursor-pointer inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 transition ease-in-out duration-150 mr-3"
                         :class="{'pointer-events-none opacity-50': isDisabled}"
@@ -114,29 +114,31 @@ const remove = async (category) => {
             @close="closeBanner"
         />
 
-        <div class="py-12">
+        <div class="pt-6 sm:pt-12 pb-4 px-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <table class="table-fixed w-full" v-if="categories.length > 0">
-                        <thead class="h-12 border-b-2">
-                        <tr>
-                            <th class="text-center px-2 w-10">Id</th>
-                            <th class="text-center px-2 w-28">Иконка</th>
-                            <th class="text-left px-4">Название категории</th>
-                            <th class="text-center px-4 w-52">Дата изменения</th>
-                            <th class="text-center px-2 w-32">Действия</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <CategoryTableRow
-                            v-for="category in categories"
-                            :category="category"
-                            :key="category.id"
-                            @remove="showDeleteModal(category)"
-                        />
-                        </tbody>
-                    </table>
-                    <div class="p-6 text-center text-gray-400 font-medium" v-else>Нет ни одного добавленного категории.</div>
+                    <div class="w-full overflow-x-auto">
+                        <table class="table-fixed table-container" v-if="categories.length > 0">
+                            <thead class="h-12 border-b-2">
+                            <tr>
+                                <th class="text-center px-2 w-10">Id</th>
+                                <th class="text-center px-2 w-28">Иконка</th>
+                                <th class="text-left px-4">Название категории</th>
+                                <th class="text-center px-4 w-52">Дата изменения</th>
+                                <th class="text-center px-2 w-32">Действия</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <CategoryTableRow
+                                v-for="category in categories"
+                                :category="category"
+                                :key="category.id"
+                                @remove="showDeleteModal(category)"
+                            />
+                            </tbody>
+                        </table>
+                        <div class="p-6 text-center text-gray-400 font-medium" v-else>Нет ни одного добавленного категории.</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,3 +170,10 @@ const remove = async (category) => {
         </Modal>
     </AppLayout>
 </template>
+
+<style scoped>
+.table-container {
+    width: 100%;
+    min-width: 900px;
+}
+</style>

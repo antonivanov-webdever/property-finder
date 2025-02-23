@@ -98,7 +98,7 @@
 }
 
 .ya-popover-image {
-    min-width: 250px;
+    min-width: 260px;
     background-image: url('./storage/images/placeholder.jpg');
     background-position: center center;
     background-repeat: no-repeat;
@@ -109,7 +109,7 @@
 }
 
 .ya-popover img {
-    width: 250px;
+    width: 260px;
     height: 100%;
     object-fit: cover;
 }

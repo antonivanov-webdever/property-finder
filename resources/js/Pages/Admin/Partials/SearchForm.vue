@@ -7,8 +7,8 @@ const props = defineProps(['searchForm']);
 </script>
 
 <template>
-  <form class="search-form flex flex-nowrap w-full items-end" @submit.prevent="$emit('submit')">
-    <div class="form-group w-full mr-4">
+  <form class="search-form flex flex-nowrap w-full items-end max-sm:flex-col" @submit.prevent="$emit('submit')">
+    <div class="form-group w-full sm:mr-4 max-sm:mb-3">
       <InputLabel for="name" value="Поиск по названию объекта или id" />
       <TextInput
           id="search"
@@ -17,6 +17,6 @@ const props = defineProps(['searchForm']);
           class="block w-full mt-1"
       />
     </div>
-    <PrimaryButton class="shrink-0 py-3 px-6">Поиск</PrimaryButton>
+    <PrimaryButton class="shrink-0 py-3 px-6 max-sm:w-full justify-center">Поиск</PrimaryButton>
   </form>
 </template>
