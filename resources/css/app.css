@@ -15,7 +15,7 @@
 
 .main {
     background-color: rgb(243 244 246);
-    min-height: calc(100vh - 90px);
+    min-height: calc(100vh - 161px);
 }
 
 .header-container {
@@ -238,7 +238,7 @@
 
 @media (max-width: 475px) {
     .map-container {
-        height: 400px;
+        height: 500px !important;
     }
 
     .ya-popover-content {
@@ -254,7 +254,7 @@
 
     .ya-popover-image img {
         width: 100%;
-        height: 150px;
+        height: 250px;
         object-fit: cover;
     }
 
@@ -271,5 +271,13 @@
     .ya-popover-links {
         font-family: 'Roboto Condensed', sans-serif;
         white-space: normal;
+    }
+
+    .ymaps-2-1-79-balloon__content {
+        min-height: 350px!important;
+    }
+
+    .ymaps-2-1-79-balloon__content ymaps {
+        min-height: 350px!important;
     }
 }

@@ -15,7 +15,7 @@ watch(() => props.point.is_visible, (newValue) => {
 </script>
 
 <template>
-    <tr class="even:bg-gray-100 h-28">
+    <tr class="even:bg-gray-100 dark:even:bg-gray-600 dark:text-gray-200 h-28">
         <td class="py-2 px-4 text-center">{{ id }}</td>
         <td class="py-2 px-4 text-center">
             <img :src="`${ image }`" :alt="name">

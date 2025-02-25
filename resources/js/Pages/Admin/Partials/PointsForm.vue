@@ -24,7 +24,7 @@ onMounted(async () => {
 <template>
     <form>
         <div class="form-wrapper md:grid md:grid-cols-8">
-            <div class="md:col-span-4 flex-col justify-between p-6 border-r border-r-gray-200">
+            <div class="md:col-span-4 flex-col justify-between p-6 md:border-r">
                 <div class="">
                     <InputLabel for="name" value="Название объекта" />
                     <TextInput

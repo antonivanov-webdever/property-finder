@@ -118,7 +118,7 @@ const remove = async (category) => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="w-full overflow-x-auto">
-                        <table class="table-fixed table-container" v-if="categories.length > 0">
+                        <table class="table-fixed table-container dark:text-gray-200" v-if="categories.length > 0">
                             <thead class="h-12 border-b-2">
                             <tr>
                                 <th class="text-center px-2 w-10">Id</th>
@@ -145,22 +145,22 @@ const remove = async (category) => {
 
 
         <Modal :show="isModalShown" max-width="md">
-            <div class="py-8 px-12">
+            <div class="py-8 px-12 dark:text-gray-200">
                 <h2 class="">Вы точно хотите удалить данный категорию?</h2>
                 <div class="info mt-6 text-sm">
                     <div>
-                        <span>Название категорию:</span>
+                        <span>Название категории:</span>
                         <p>{{deletingCategory.name}}</p>
                     </div>
                     <div class="mt-3">
-                        <span>Иконка категорию:</span>
+                        <span>Иконка категории:</span>
                         <img :src="deletingCategory.icon" :alt="deletingCategory.name">
                     </div>
                 </div>
                 <div class="actions mt-6 w-full flex justify-end">
                     <SecondaryButton
                         @click="remove(deletingCategory)"
-                        class="mr-2 hover:bg-red-400 hover:text-white hover:border-red-400"
+                        class="mr-2 hover:bg-red-400 hover:text-white hover:border-red-400 dark:hover:bg-red-400"
                     >
                         Удалить
                     </SecondaryButton>
@@ -174,6 +174,6 @@ const remove = async (category) => {
 <style scoped>
 .table-container {
     width: 100%;
-    min-width: 900px;
+    min-width: 750px;
 }
 </style>

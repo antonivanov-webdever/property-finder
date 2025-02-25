@@ -9,7 +9,7 @@ const { id, icon, name, updated_at } = props.category;
 </script>
 
 <template>
-  <tr class="even:bg-gray-100 h-28">
+  <tr class="even:bg-gray-100 dark:even:bg-gray-600 h-28">
     <td class="py-2 px-4 text-center">{{ id }}</td>
     <td class="py-2 px-4 text-center">
       <img :src="`${ icon }`" :alt="name" class="mx-auto">

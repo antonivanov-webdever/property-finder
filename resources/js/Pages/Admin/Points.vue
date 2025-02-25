@@ -144,7 +144,7 @@ const remove = async (point) => {
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight max-sm:mb-4 max-sm:text-center">
                     Список точек
                 </h2>
-                <div class="max-sm:flex max-sm:flex-col mx-auto">
+                <div class="max-sm:flex max-sm:flex-col max-sm:mx-auto">
                     <CsvUploader
                         class="sm:mr-3 max-sm:mb-4"
                         v-model="csvForm.csv"
@@ -192,12 +192,12 @@ const remove = async (point) => {
                 </div>
             </div>
         </div>
-        <div class="pt-4 pb-12 max-sm:px-4">
+        <div class="pt-4 pb-12 max-sm:px-4 dark:bg-gray-800">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-lg">
                     <div class="w-full overflow-x-auto" v-if="points">
                         <table class="table-fixed table-container">
-                            <thead class="h-12 border-b-2">
+                            <thead class="h-12 border-b-2 dark:text-gray-200">
                             <tr>
                                 <th class="text-center px-2 w-10">Id</th>
                                 <th class="text-center px-2 w-28">Фото</th>
@@ -221,7 +221,7 @@ const remove = async (point) => {
                     </div>
                     <div class="p-6 text-center text-gray-400 font-medium" v-else>Нет ни одной добавленной точки.</div>
                 </div>
-                <div class="pagination shadow-lg p-6 w-full flex justify-center bg-white rounded-lg mt-8">
+                <div class="pagination shadow-lg p-6 w-full flex justify-center bg-white dark:bg-gray-600 dark:text-gray-200 rounded-lg mt-8">
                     <Pagination :links="links" />
                 </div>
             </div>
@@ -229,7 +229,7 @@ const remove = async (point) => {
 
 
         <Modal :show="isModalShown" max-width="md">
-            <div class="py-8 px-12">
+            <div class="py-8 px-12 dark:text-gray-200">
                 <h2 class="">Вы точно хотите удалить данную точку?</h2>
                 <div class="info mt-6 text-sm">
                     <div>
@@ -248,7 +248,7 @@ const remove = async (point) => {
                 <div class="actions mt-6 w-full flex justify-end">
                     <SecondaryButton
                         @click="remove(deletingPoint)"
-                        class="mr-2 hover:bg-red-400 hover:text-white hover:border-red-400"
+                        class="mr-2 hover:bg-red-400 dark:hover:bg-red-400 hover:text-white hover:border-red-400"
                     >
                         Удалить
                     </SecondaryButton>

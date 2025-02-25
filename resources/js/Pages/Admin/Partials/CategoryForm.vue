@@ -10,7 +10,7 @@ const props = defineProps(['form']);
 <template>
     <form>
         <div class="form-wrapper md:grid md:grid-cols-1">
-            <div class="md:col-span-1 flex-col justify-between p-6 border-r border-r-gray-200">
+            <div class="md:col-span-1 flex-col justify-between p-6">
                 <div class="">
                     <InputLabel for="name" value="Название категории" />
                     <TextInput

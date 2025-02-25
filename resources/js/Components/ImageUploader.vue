@@ -34,9 +34,11 @@ onUpdated(() => {
     if (imageSrc.value) {
         const filename = props.image;
 
-        if (filename && !filename.includes('placeholder')) {
-            buttonText.value = 'Заменить';
-            fileName.value = '';
+        if (typeof filename === 'string') {
+            if (filename && !filename.includes('placeholder')) {
+                buttonText.value = 'Заменить';
+                fileName.value = '';
+            }
         }
     }
 });
@@ -56,7 +58,7 @@ const updateImage = (event) => {
 <template>
     <div class="flex flex-col text-gray-400">
         <img class="mt-2 mb-3 rounded-md" :class="[size]" v-if="imageSrc" :src="imageSrc">
-        <div class="control-container">
+        <div class="control-container mt-6">
             <button
                 type="button"
                 @click.prevent="file.click()"
@@ -65,7 +67,7 @@ const updateImage = (event) => {
                 bg-white text-gray-700 font-semibold
                 hover:bg-gray-100
                 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                max-sm:w-full"
+                max-sm:w-full max-sm:mb-2"
             >
                 {{ buttonText }}
             </button>

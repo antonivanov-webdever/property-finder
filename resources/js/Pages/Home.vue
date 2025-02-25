@@ -16,23 +16,31 @@ import Map from "@/Pages/Shared/Partials/Map.vue";
                 <nav class="nav"></nav>
             </div>
         </header>
-        <main class="main">
-            <div class="py-2 sm:py-12">
+        <main class="main dark:bg-gray-900">
+            <div class="max-sm:pb-9 sm:py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg max-sm:pt-4">
                         <Map />
                     </div>
                 </div>
             </div>
         </main>
-        <footer class="footer">
+        <footer class="footer dark:bg-gray-600">
             <div class="footer-container">
                 <div class="copyright"></div>
                 <div class="ya-informer">
                     <!-- Yandex.Metrika informer -->
                     <a href="https://metrika.yandex.ru/stat/?id=100015090&amp;from=informer"
-                       target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/100015090/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
-                                                           style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="100015090" data-lang="ru" /></a>
+                       target="_blank"
+                       rel="nofollow"
+                    >
+                        <img src="https://informer.yandex.ru/informer/100015090/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+                             style="width:88px; height:31px; border:0;"
+                             alt="Яндекс.Метрика"
+                             title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)"
+                             class="ym-advanced-informer"
+                             data-cid="100015090" data-lang="ru" />
+                    </a>
                     <!-- /Yandex.Metrika informer -->
                 </div>
             </div>
