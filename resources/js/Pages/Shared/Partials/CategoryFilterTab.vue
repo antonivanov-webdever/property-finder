@@ -27,7 +27,3 @@ const isChecked = ref(true);
         </span>
     </label>
 </template>
-
-<style scoped>
-
-</style>

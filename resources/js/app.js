@@ -6,7 +6,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Property Finder';
+const appName = import.meta.env.VITE_APP_NAME || 'Карта Строек';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

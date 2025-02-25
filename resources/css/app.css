@@ -15,7 +15,7 @@
 
 .main {
     background-color: rgb(243 244 246);
-    min-height: calc(100vh - 161px);
+    min-height: calc(100vh - 90px);
 }
 
 .header-container {
@@ -237,6 +237,10 @@
 }
 
 @media (max-width: 475px) {
+    main {
+        min-height: calc(100vh - 161px)!important;
+    }
+
     .map-container {
         height: 500px !important;
     }
