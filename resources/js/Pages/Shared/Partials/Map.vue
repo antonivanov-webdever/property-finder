@@ -1,12 +1,22 @@
 <script setup>
-import {baloonContentHtml, baloonHtml} from "@/Pages/Shared/Partials/baloonHtml.js";
+import { baloonContentHtml, baloonHtml } from "@/Pages/Shared/Partials/baloonHtml.js";
 import CategoryFilter from "@/Pages/Shared/Partials/CategoryFilter.vue";
-import {ref} from "vue";
+import { useYandexMaps } from "@/composables/useYandexMaps.js";
+import { ref } from "vue";
 
 const isLoading = ref(false);
-let myMap;
+const updateCategoryFilter = ref(undefined)
+let myMap = null;
 
-ymaps.ready(init);
+useYandexMaps(() => {
+    init();
+
+    updateCategoryFilter.value = (activeFilters) => {
+        if (ymaps.ready()) {
+            myMap.filter(activeFilters);
+        }
+    }
+})
 
 function init() {
     isLoading.value = true;
@@ -129,11 +139,6 @@ function init() {
     })
 }
 
-const updateCategoryFilter = (activeFilters) => {
-    if (ymaps.ready()) {
-        myMap.filter(activeFilters);
-    }
-}
 </script>
 
 <template>
