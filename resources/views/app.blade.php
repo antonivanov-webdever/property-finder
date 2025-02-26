@@ -32,7 +32,7 @@
         <!-- /Yandex.Metrika counter -->
 
         @routes
-        @vite(['resources/js/ssr.js', "resources/js/Pages/{$page['component']}.vue"])
+        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
