@@ -3,12 +3,10 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PointController;
+use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home', []);
-});
+Route::get('/', [SiteController::class, 'index']);
 
 Route::get('/getPointsOMJson', [PointController::class, 'getPointsOMJson'])->name('points.getPointsOMJson');
 
