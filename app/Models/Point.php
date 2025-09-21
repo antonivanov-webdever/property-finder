@@ -61,7 +61,7 @@ class Point extends Model
             $coordinatesArray = json_decode($point->coordinates);
             $longitude = $coordinatesArray[0];
             $latitude = $coordinatesArray[1];
-            $descriptionArray = explode(';', Json::decode($point->description));
+            $descriptionArray = explode(';', json_decode($point->description));
             $descriptionHtml = '';
             $tgLink = null;
             $youtubeLink = null;
