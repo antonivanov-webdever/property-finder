@@ -61,13 +61,17 @@ class Point extends Model
             $coordinatesArray = json_decode($point->coordinates);
             $longitude = $coordinatesArray[0];
             $latitude = $coordinatesArray[1];
-            $descriptionArray = explode(';', json_decode($point->description));
+            $description = json_decode($point->description) ?? $point->description;
+            $descriptionArray = explode(';', $description);
             $descriptionHtml = '';
             $tgLink = null;
             $youtubeLink = null;
 
             foreach ($descriptionArray as $descriptionItem) {
                 $descriptionItem = trim($descriptionItem);
+                if (empty($descriptionItem)) {
+                    continue;
+                }
                 if (str_contains(':', $descriptionItem)) {
                     $descriptionItemArray = explode(':', $descriptionItem);
                     $descriptionHtml .= '<div><span>' . $descriptionItemArray[0] . ':</span> ' . $descriptionItemArray[1] . '</div>';

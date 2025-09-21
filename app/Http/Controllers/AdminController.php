@@ -69,7 +69,7 @@ class AdminController extends Controller
                     'image' => '/admin/storage/images/placeholder.jpg',
                     'name' => $name,
                     'address' => $address,
-                    'description' => 'Застройщик: ' . $builder,
+                    'description' => Json::encode('Застройщик: ' . $builder),
                     'coordinates' => Json::encode($coordinates),
                     'category_id' => $emptyCategory->id,
                     'is_visible' => 0
