@@ -58,10 +58,11 @@ class PointController extends Controller
 
         $imagePath = $request->file('image')->store('storage/images', 'admin');
         $coordinates = Json::encode($request->get('coordinates'));
+        $description = Json::encode($request->get('description'));
 
         Point::create([
             'name' => $request->get('name'),
-            'description' => $request->get('description'),
+            'description' => $description,
             'image' => '/admin/' . $imagePath,
             'tg_link' => $request->get('tg_link'),
             'youtube_link' => $request->get('youtube_link'),
@@ -180,7 +181,7 @@ class PointController extends Controller
                     'image' => $point->image,
                     'name' => $point->name,
                     'address' => $point->address,
-                    'description' => $point->description,
+                    'description' => Json::decode($point->description),
                     'tg_link' => $point->tg_link,
                     'youtube_link' => $point->youtube_link,
                     'category' => Category::find($point->category_id)->name,
