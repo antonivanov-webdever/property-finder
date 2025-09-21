@@ -68,8 +68,12 @@ class Point extends Model
             $youtubeLink = null;
 
             foreach ($descriptionArray as $descriptionItem) {
-                $descriptionItemArray = explode(':', $descriptionItem);
-                $descriptionHtml .= '<div><span>' . $descriptionItemArray[0] . ':</span> ' . $descriptionItemArray[1] . '</div>';
+                if (str_contains(':', $descriptionItem)) {
+                    $descriptionItemArray = explode(':', $descriptionItem);
+                    $descriptionHtml .= '<div><span>' . $descriptionItemArray[0] . ':</span> ' . $descriptionItemArray[1] . '</div>';
+                } else {
+                    $descriptionHtml .= '<div>' . $descriptionItem . '</div>';
+                }
             }
 
             if ($point->tg_link) {
