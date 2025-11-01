@@ -47,7 +47,7 @@ class PointController extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|max:255',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|min:3|max:255',
             'tg_link' => 'nullable|min:3|max:255|url:https,t.me',
             'youtube_link' => 'nullable|min:3|max:255|url:https,youtu.be',
