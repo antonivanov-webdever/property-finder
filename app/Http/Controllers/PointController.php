@@ -47,7 +47,7 @@ class PointController extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|min:3|max:255',
             'tg_link' => 'nullable|min:3|max:255|url:https,t.me',
             'youtube_link' => 'nullable|min:3|max:255|url:https,youtu.be',
@@ -56,7 +56,12 @@ class PointController extends Controller
             'address' => 'required|min:3|max:255',
         ]);
 
-        $imagePath = $request->file('image')->store('storage/images', 'admin');
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('storage/images', 'admin');
+        } else {
+            $imagePath = 'storage/images/placeholder.jpg';
+        }
+
         $coordinates = Json::encode($request->get('coordinates'));
         $description = Json::encode($request->get('description'));
 
