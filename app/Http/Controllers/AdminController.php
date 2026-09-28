@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -69,8 +68,8 @@ class AdminController extends Controller
                     'image' => '/admin/storage/images/placeholder.jpg',
                     'name' => $name,
                     'address' => $address,
-                    'description' => Json::encode('Застройщик: ' . $builder),
-                    'coordinates' => Json::encode($coordinates),
+                    'description' => 'Застройщик: ' . $builder,
+                    'coordinates' => $coordinates,
                     'category_id' => $emptyCategory->id,
                     'is_visible' => 0
                 ]);

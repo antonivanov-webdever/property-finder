@@ -58,7 +58,7 @@ function init() {
     });
 
     if (page.props.point?.address) {
-        coordinates.value = JSON.parse(page.props.point.coordinates);
+        coordinates.value = page.props.point.coordinates;
 
         setAddressByCoordinates();
         addPlaceMark();

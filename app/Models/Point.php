@@ -43,6 +43,10 @@ class Point extends Model
         'updated_at'
     ];
 
+    protected $casts = [
+        'coordinates' => 'array'
+    ];
+
     public static function getAllPointsJsonForOM($request): string
     {
         $result = [];
@@ -58,11 +62,11 @@ class Point extends Model
                 $categoryIconPath = str_replace('/admin', '', $category->icon);
             }
 
-            $coordinatesArray = json_decode($point->coordinates);
+            $coordinatesArray = $point->coordinates;
             $longitude = $coordinatesArray[0];
             $latitude = $coordinatesArray[1];
-            $description = json_decode($point->description) ?? $point->description;
-            $descriptionArray = explode(';', $description);
+            $description = $point->description;
+            $descriptionArray = explode(';', $description); 
             $descriptionHtml = '';
             $tgLink = null;
             $youtubeLink = null;
@@ -72,7 +76,8 @@ class Point extends Model
                 if (empty($descriptionItem)) {
                     continue;
                 }
-                if (str_contains(':', $descriptionItem)) {
+
+                if (str_contains($descriptionItem, ':')) {
                     $descriptionItemArray = explode(':', $descriptionItem);
                     $descriptionHtml .= '<div><span>' . $descriptionItemArray[0] . ':</span> ' . $descriptionItemArray[1] . '</div>';
                 } else {

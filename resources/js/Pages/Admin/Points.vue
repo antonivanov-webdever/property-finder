@@ -195,7 +195,7 @@ const remove = async (point) => {
         <div class="pt-4 pb-12 max-sm:px-4 dark:bg-gray-800">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-md sm:rounded-lg">
-                    <div class="w-full overflow-x-auto" v-if="points">
+                    <div class="w-full overflow-x-auto" v-if="points?.length">
                         <table class="table-fixed table-container">
                             <thead class="h-12 border-b-2 dark:text-gray-200">
                             <tr>
@@ -221,7 +221,7 @@ const remove = async (point) => {
                     </div>
                     <div class="p-6 text-center text-gray-400 font-medium" v-else>Нет ни одной добавленной точки.</div>
                 </div>
-                <div class="pagination shadow-lg p-6 w-full flex justify-center bg-white dark:bg-gray-600 dark:text-gray-200 rounded-lg mt-8">
+                <div v-if="points?.length" class="pagination shadow-lg p-6 w-full flex justify-center bg-white dark:bg-gray-600 dark:text-gray-200 rounded-lg mt-8">
                     <Pagination :links="links" />
                 </div>
             </div>

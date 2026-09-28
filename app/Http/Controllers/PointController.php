@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Point;
-use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -62,17 +61,14 @@ class PointController extends Controller
             $imagePath = 'storage/images/placeholder.jpg';
         }
 
-        $coordinates = Json::encode($request->get('coordinates'));
-        $description = Json::encode($request->get('description'));
-
         Point::create([
             'name' => $request->get('name'),
-            'description' => $description,
+            'description' => $request->get('description'),
             'image' => '/admin/' . $imagePath,
             'tg_link' => $request->get('tg_link'),
             'youtube_link' => $request->get('youtube_link'),
             'category_id' => $request->get('category_id'),
-            'coordinates' => $coordinates,
+            'coordinates' => $request->get('coordinates'),
             'address' => $request->get('address'),
         ]);
 
@@ -114,15 +110,13 @@ class PointController extends Controller
             $imagePath = $point->image;
         }
 
-        $coordinates = Json::encode($request->get('coordinates'));
-
         $point->name = $request->get('name');
         $point->description = $request->get('description');
         $point->image = $imagePath;
         $point->tg_link = $request->get('tg_link');
         $point->youtube_link = $request->get('youtube_link');
         $point->category_id = $request->get('category_id');
-        $point->coordinates = $coordinates;
+        $point->coordinates = $request->get('coordinates');
         $point->address = $request->get('address');
 
         $point->save();
@@ -186,7 +180,7 @@ class PointController extends Controller
                     'image' => $point->image,
                     'name' => $point->name,
                     'address' => $point->address,
-                    'description' => Json::decode($point->description),
+                    'description' => $point->description,
                     'tg_link' => $point->tg_link,
                     'youtube_link' => $point->youtube_link,
                     'category' => Category::find($point->category_id)->name,
