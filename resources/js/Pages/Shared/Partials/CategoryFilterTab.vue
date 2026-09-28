@@ -1,0 +1,29 @@
+<script setup>
+
+
+import {onMounted, ref} from "vue";
+import Checkbox from "@/Components/Checkbox.vue";
+
+const props = defineProps(['category']);
+const isChecked = ref(true);
+</script>
+
+<template>
+    <label class="flex sm:flex-row flex-nowrap mr-3 mb-3">
+        <Checkbox
+            class="hidden"
+            :checked="isChecked"
+            v-model:checked="isChecked"
+            @update:checked="$emit('update:checked', {isChecked, id:category.id})"
+        />
+        <span
+            class="flex flex-row flex-nowrap py-2 px-4
+            bg-sky-50 dark:bg-gray-100 cursor-pointer text-sm sm:text-md
+            rounded-3xl border-2"
+            :class="{'border-purple-700 dark:border-gray-100 opacity-100': isChecked, 'border-gray-300 opacity-50': !isChecked }"
+        >
+            <img :src="category.icon" :alt="category.name" class="w-4 object-contain mr-1.5">
+            {{ category.name }}
+        </span>
+    </label>
+</template>

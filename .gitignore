@@ -1,9 +1,11 @@
+.DS_Store
 /.phpunit.cache
 /bootstrap/ssr
 /node_modules
 /public/build
 /public/hot
 /public/storage
+/public/admin
 /storage/*.key
 /storage/pail
 /vendor

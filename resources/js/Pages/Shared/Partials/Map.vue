@@ -1,0 +1,161 @@
+<script setup>
+import { baloonContentHtml, baloonHtml } from "@/Pages/Shared/Partials/baloonHtml.js";
+import CategoryFilter from "@/Pages/Shared/Partials/CategoryFilter.vue";
+import { useYandexMaps } from "@/composables/useYandexMaps.js";
+import { ref } from "vue";
+
+const isLoading = ref(false);
+const updateCategoryFilter = ref(undefined)
+let myMap = null;
+
+useYandexMaps(() => {
+    init();
+
+    updateCategoryFilter.value = (activeFilters) => {
+        if (ymaps.ready()) {
+            myMap.filter(activeFilters);
+        }
+    }
+})
+
+function init() {
+    isLoading.value = true;
+    myMap = new ymaps.Map("map", {
+        center: [55.76, 37.64],
+        zoom: 9,
+        controls: ["fullscreenControl", "rulerControl", "typeSelector", "zoomControl", "trafficControl", "searchControl"]
+    });
+    myMap.options.set({balloonPanelMaxMapArea: '260000'});
+
+    const objectManager = new ymaps.ObjectManager({
+        clusterize: false,
+        gridSize: 32,
+        clusterDisableClickZoom: false
+    });
+
+    objectManager.objects.options.set("iconLayout", "default#image");
+    objectManager.objects.options.set("iconImageSize", [16, 16]);
+    objectManager.objects.options.set("iconImageOffset", [-8, -8]);
+    objectManager.objects.options.set("hideIconOnBalloonOpen", false);
+    objectManager.clusters.options.set("preset", "islands#greenClusterIcons");
+
+    objectManager.objects.events.add('click', function(event) {
+        const objectId = event.get('objectId');
+        const objectState = objectManager.getObjectState(objectId);
+        if (objectState.isClustered) {
+            objectManager.clusters.balloon.open(objectState.cluster.id);
+        } else {
+            objectManager.objects.balloon.open(objectId);
+        }
+    });
+
+    objectManager.objects.events.add('balloonopen', function(event) {
+        const objectId = event.get('objectId');
+        const object = objectManager.objects.getById(objectId);
+
+        if (event.properties && objectManager.objects.baloon.isOpen(objectId)) {
+            objectManager.objects.baloon.setData(object);
+        }
+    })
+
+    myMap.events.add('click', function() {
+        if (myMap.balloon.isOpen()) {
+            myMap.balloon.close()
+        }
+    });
+    myMap.filter = function(t) {
+        objectManager.setFilter(function(object) {
+            return -1 < t.indexOf(object.properties.category_id)
+        })
+    }
+    myMap.geoObjects.add(objectManager);
+
+    axios.get(route('points.getPointsOMJson'), {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(res => {
+        const object = ymaps.templateLayoutFactory.createClass(baloonHtml, {
+            build: function() {
+                this.constructor.superclass.build.call(this);
+                this._$element = this.getParentElement().querySelector(".ya-popover");
+                this.applyElementOffset();
+                this._$element.querySelector(".close").addEventListener("click", this.onCloseClick.bind(this));
+            },
+            clear: function() {
+                this._$element.querySelector(".close").removeEventListener("click", this.onCloseClick);
+                this.constructor.superclass.clear.call(this);
+            },
+            onSublayoutSizeChange: function() {
+                object.superclass.onSublayoutSizeChange.apply(this, arguments);
+                if (this._isElement(this._$element)) {
+                    this.applyElementOffset();
+                    this.events.fire("shapechange");
+                }
+            },
+            applyElementOffset: function() {
+                this._$element.style.left = -this._$element.offsetWidth / 2 + 'px';
+                this._$element.style.top = -(this._$element.offsetHeight + this._$element.querySelector(".arrow").offsetHeight) + 'px';
+            },
+            onCloseClick: function(e) {
+                e.preventDefault();
+                this.events.fire("userclose");
+            },
+            getShape: function() {
+                if (!this._isElement(this._$element)) {
+                    return object.superclass.getShape.call(this);
+                }
+
+                const position = {
+                    top: this._$element.offsetTop,
+                    left: this._$element.offsetLeft
+                };
+
+                return new ymaps.shape.Rectangle(new ymaps.geometry.pixel.Rectangle(
+                    [
+                        [
+                            position.left,
+                            position.top
+                        ],
+                        [
+                            position.left + this._$element.offsetWidth,
+                            position.top + this._$element.offsetHeight + this._$element.querySelector(".arrow").offsetHeight
+                        ]
+                    ]
+                ))
+            },
+            _isElement: function(element) {
+                return element && element.querySelector(".arrow");
+            }
+        })
+
+        const content = ymaps.templateLayoutFactory.createClass(baloonContentHtml);
+
+        objectManager.objects.options.set("balloonLayout", object);
+        objectManager.objects.options.set("balloonContentLayout", content);
+        objectManager.add(res.data);
+    }).finally(() => {
+        isLoading.value = false;
+    })
+}
+
+</script>
+
+<template>
+    <div class="map">
+        <div class="filters pt-4 px-6">
+            <h1 class="sm:text-xl font-bold mb-4 sm:mb-5 dark:text-gray-200">Карта строек</h1>
+            <h3 class="sm:text-lg dark:text-gray-200">Отображать объекты со статусом:</h3>
+            <CategoryFilter @update:categoryFilter="updateCategoryFilter"/>
+        </div>
+        <div class="map-container px-3 sm:px-6 sm:py-2 flex justify-center">
+            <div class="loader h-44 w-44 self-center" v-if="isLoading">
+                <svg class="animate-spin h-24 w-24 text-blue-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+            <div id="map" class="border w-full" v-show="!isLoading"></div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,48 @@
+<script setup>
+import {Link, useForm, usePage} from "@inertiajs/vue3";
+import AppLayout from "@/Layouts/AppLayout.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import CategoryForm from "@/Pages/Admin/Partials/CategoryForm.vue";
+
+const page = usePage();
+
+const form = useForm({
+    name: page.props.category.name,
+    icon: page.props.category.icon,
+});
+</script>
+
+<template>
+    <AppLayout title="Edit Point">
+        <template #header>
+            <div class="flex flex-row justify-between align-middle max-sm:flex-col">
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight max-sm:mb-4 text-center">
+                    Редактирование категории
+                </h2>
+                <div class="max-sm:flex max-sm:flex-col max-sm:max-w-44 max-sm:m-auto">
+                    <Link
+                        :href="route('categories.index')"
+                        class="inline-flex items-center max-sm:justify-center px-4 py-2 max-sm:mb-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150 sm:mr-3"
+                    >
+                        Назад к списку
+                    </Link>
+                    <PrimaryButton
+                        class="cursor-pointer inline-flex items-center max-sm:justify-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 transition ease-in-out duration-150"
+                        @click="form.post(route('categories.update', {id: page.props.category.id}));"
+                    >
+                        Сохранить
+                    </PrimaryButton>
+                </div>
+            </div>
+        </template>
+
+        <div class="p-4 sm:p-12">
+            <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
+                    <CategoryForm :form="form" />
+                </div>
+            </div>
+        </div>
+
+    </AppLayout>
+</template>

@@ -13,7 +13,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
-    protected $rootView = 'app';
+    protected $rootView = 'admin';
 
     /**
      * Determine the current asset version.
@@ -35,6 +35,12 @@ class HandleInertiaRequests extends Middleware
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
+            ],
+            'flash' => [
+                'message' => fn () => $request->session()->get('message')
+            ],
+            'maps' => [
+                'api_key' => config('services.maps.api_key'),
             ],
         ];
     }
