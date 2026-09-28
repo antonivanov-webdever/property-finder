@@ -39,6 +39,9 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'message' => fn () => $request->session()->get('message')
             ],
+            'maps' => [
+                'api_key' => config('services.maps.api_key'),
+            ],
         ];
     }
 }
